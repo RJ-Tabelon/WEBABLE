@@ -16,7 +16,11 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test": "pnpm --filter @webable/extension test",
+    "test:e2e": "pnpm --filter @webable/extension test:e2e",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
+    "verify": "pnpm check && pnpm test:e2e && pnpm build && pnpm extension:check"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
