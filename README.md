@@ -41,4 +41,4 @@ pnpm lint
 pnpm typecheck
 ```
 
-See [Contributing](docs/CONTRIBUTING.md) for hooks, required review, and the **AI-generated code** PR convention.
+See [Contributing](docs/CONTRIBUTING.md) for hooks, required review, and PR labels.
