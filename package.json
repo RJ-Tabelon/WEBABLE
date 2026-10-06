@@ -12,6 +12,27 @@
     "dev:extension": "pnpm dev",
     "build": "pnpm --filter @webable/extension build",
     "typecheck": "pnpm --filter @webable/extension typecheck",
-    "extension:check": "node scripts/check-extension-package.mjs"
+    "extension:check": "node scripts/check-extension-package.mjs",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.44.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.0"
+  },
+  "lint-staged": {
+    "*.{js,mjs,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,html,md,yml,yaml}": "prettier --write"
   }
 }

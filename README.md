@@ -32,3 +32,13 @@ Open Chrome's `chrome://extensions`, enable **Developer mode**, select **Load un
 WXT uses Vite for bundling and generates the popup and module service worker entries. `engine.content.ts` becomes `content-scripts/engine.js`. Like the prototype, it uses runtime registration; `content_scripts` is empty and production has no permanent host access. Later feature PRs can inject the script through `scripting` after a toolbar action grants `activeTab`. The scaffold does not yet modify pages.
 
 Dependencies are locked in `pnpm-lock.yaml`; use `pnpm install --frozen-lockfile` in reproducible builds.
+
+## Contribution checks
+
+```sh
+pnpm format:check
+pnpm lint
+pnpm typecheck
+```
+
+See [Contributing](docs/CONTRIBUTING.md) for hooks, required review, and the **AI-generated code** PR convention.

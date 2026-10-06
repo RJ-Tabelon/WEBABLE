@@ -3,10 +3,7 @@
   "name": "WebAble",
   "version": "0.1.0",
   "description": "User-controlled website adaptations.",
-  "permissions": [
-    "activeTab",
-    "scripting"
-  ],
+  "permissions": ["activeTab", "scripting"],
   "action": {
     "default_title": "WebAble",
     "default_popup": "popup.html"
