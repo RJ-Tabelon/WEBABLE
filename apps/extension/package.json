@@ -8,18 +8,28 @@
     "dev": "wxt",
     "postinstall": "wxt prepare",
     "typecheck": "tsc --noEmit",
-    "zip": "wxt zip"
+    "zip": "wxt zip",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "wxt build --mode e2e && playwright test"
   },
   "dependencies": {
     "react": "19.3.0",
     "react-dom": "19.3.0"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.10.2",
+    "@playwright/test": "^1.63.0",
+    "@types/chrome": "~0.1.43",
+    "@types/node": "^24.19.1",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@wxt-dev/module-react": "^1.2.2",
+    "axe-core": "^4.10.3",
+    "jsdom": "^27.0.0",
     "typescript": "^5.9.2",
     "vite": "^8.3.0",
+    "vitest": "^5.0.1",
     "wxt": "^0.21.4"
   }
 }
