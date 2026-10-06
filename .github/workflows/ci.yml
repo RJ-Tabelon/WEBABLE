@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+    types:
+      [
+        opened,
+        synchronize,
+        reopened,
+        edited,
+        labeled,
+        unlabeled,
+        ready_for_review,
+      ]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      HUSKY: '0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.31.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Check PR disclosure
+        run: node scripts/check-pr-convention.mjs
+      - name: Lint and formatting
+        run: pnpm lint && pnpm format:check
+      - name: Typecheck
+        run: pnpm typecheck
+      - name: Unit tests
+        run: pnpm test
+      - name: Install Chromium
+        run: pnpm --filter @webable/extension exec playwright install --with-deps chromium
+      - name: Extension e2e and axe accessibility tests
+        run: pnpm test:e2e
+      - name: Build production artifact
+        run: pnpm build && pnpm extension:check
+      - name: Upload unpacked production extension
+        uses: actions/upload-artifact@v4
+        with:
+          name: webable-chrome-mv3
+          path: apps/extension/.output/chrome-mv3/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Upload Playwright diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-diagnostics
+          path: |
+            apps/extension/playwright-report/
+            apps/extension/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
