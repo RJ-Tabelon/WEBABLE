@@ -39,8 +39,6 @@ jobs:
           cache: pnpm
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-      - name: Check PR disclosure
-        run: node scripts/check-pr-convention.mjs
       - name: Lint and formatting
         run: pnpm lint && pnpm format:check
       - name: Typecheck

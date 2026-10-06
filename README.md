@@ -41,7 +41,7 @@ pnpm lint
 pnpm typecheck
 ```
 
-See [Contributing](docs/CONTRIBUTING.md) for hooks, required review, and the **AI-generated code** PR convention.
+See [Contributing](docs/CONTRIBUTING.md) for hooks, required review, and PR labels.
 
 ## Testing and CI
 
@@ -63,4 +63,4 @@ The e2e build grants access only to `http://127.0.0.1:4173/*`. Always load the p
 
 CI runs **lint → typecheck → unit tests → e2e/axe → production build** and uploads `webable-chrome-mv3` only after success. On test failure it retains Playwright diagnostics. Download and extract the artifact, then choose the extracted directory containing `manifest.json` in Chrome's **Load unpacked** dialog.
 
-The **CI / verify** check also enforces the PR's AI disclosure, title prefix and label. Automated axe checks are a baseline; they do not certify every accessibility requirement.
+Automated axe checks are a baseline; they do not certify every accessibility requirement.

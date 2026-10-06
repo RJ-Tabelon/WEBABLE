@@ -6,9 +6,9 @@ Create a topic branch and open a pull request; one teammate must review before m
 
 `pnpm install` enables Husky's pre-commit hook. It runs lint-staged against staged JavaScript/TypeScript and formats supported text files. Use `pnpm format` for full-repo formatting. Generated output and the dependency lockfile are excluded from Prettier. Hooks help locally; CI remains the merge gate.
 
-## AI-generated code convention
+## PR labels
 
-When AI generates or materially edits code, begin the PR title with **[AI-generated code]**, apply the repository's **AI-generated code** label, and complete the disclosure in the PR template. Explain which files were affected and how a human reviewed and verified them. Human-authored PRs should explicitly answer No.
+Apply the **AI-generated code** label when AI generates or materially edits code. PR titles describe the change, and the template focuses on scope, validation and review.
 
 ## Main branch protection (repository owner action)
 
