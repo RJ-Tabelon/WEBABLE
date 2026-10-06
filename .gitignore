@@ -1,0 +1,30 @@
+node_modules/
+.output/
+.wxt/
+chrome-mv3-dev/
+coverage/
+playwright-report/
+test-results/
+.DS_Store
+*.log
+
+# Local secrets
+.env
+.env.*
+!.env.example
+
+# Next.js
+.next*/
+next-env.d.ts
+*.tsbuildinfo
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+
+/docx-qa.34nU2t
+/docx-qa.dB8LuO
+
+Context.rtf
+Senior Project Team Contract (1).pdf
+WebAble_AI_Usage_Approval_Form.docx

@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "WebAble",
+  "version": "0.1.0",
+  "description": "User-controlled website adaptations.",
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_title": "WebAble",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": []
+}
