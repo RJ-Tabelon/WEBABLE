@@ -1,0 +1,570 @@
+/*
+ * WebAble design tokens v1.0 ("Made to Measure").
+ * One token set for the website, web app, calibration flow, extension popup,
+ * and (with --font-layer) the in-page layer. Contrast of every text/background
+ * pair is verified by scripts/contrast.mjs.
+ */
+:root {
+  color-scheme: light;
+
+  /* ---------- 0. Profile hooks (written from the user's WebAble profile) ---------- */
+  --wa-text-scale: 1; /* vision calibration or manual; multiplies the root size   */
+  --wa-target-min: 44px; /* motor ladder {24,32,44,56,72,96}; floors never go below 44 */
+  --wa-leading-add: 0; /* added to reading line-heights (spacing preference)        */
+  --wa-space-scale: 1; /* multiplies stack gaps only                                */
+
+  /* ---------- 1. Colour: light ---------- */
+  --canvas: #fafaf7; /* paper */
+  --surface-raised: #ffffff; /* inputs, popovers, selected segment, in-page chip */
+  --surface-tonal: #f2f1ec; /* footer, offer block, wells, segmented track, status pill */
+  --surface-hover: #e9e8e2;
+  --surface-press: #dfded7;
+  --surface-inverse: #1f1f1c; /* toast, tooltip */
+  --surface-inverse-hover: #34342f;
+  --ink: #1a1a17; /* 16.68 on canvas */
+  --ink-2: #45443e; /*  9.34 on canvas; ≥ 7.24 everywhere */
+  --ink-3: #5e5d56; /*  6.32 on canvas; ≥ 4.90 everywhere */
+  --on-inverse: #f3f2ec;
+  --on-inverse-2: #c9c8c0;
+  --on-inverse-accent: #9dd1a6;
+  --line: #e0dfd8; /* decorative hairline, 1.28:1 — never a control's only edge */
+  --line-strong: #7d7c73; /* control boundary, ≥ 3.11 on every surface */
+  --accent: #2d6a3e; /* fern: "WebAble changed this, or offers to" */
+  --accent-hover: #22552f;
+  --accent-tint: #e4efe6;
+  --on-accent: #ffffff;
+  --action: #1a1a17; /* primary button fill */
+  --action-hover: #3a3934;
+  --action-press: #000000;
+  --on-action: #ffffff;
+  --warning: #7a4800; /* text */
+  --warning-icon: #a36200; /* glyph */
+  --warning-tint: #faefd9;
+  --danger: #a3241c;
+  --danger-hover: #85190f;
+  --danger-tint: #fbe9e6;
+  --on-danger: #ffffff;
+  --selection: #cfe2d3;
+  --focus: #1a1a17;
+  --focus-inverse: #f3f2ec; /* applied inside .wa-inverse */
+  --scrim: rgb(26 26 23 / 0.28);
+  --header-bg: rgb(250 250 247 / 0.92);
+  --fit-fill: rgb(45 106 62 / 0.06);
+  --font-smoothing: auto;
+  /* Fixed in both themes */
+  --stage: #ffffff; /* calibration stimulus field */
+  --stimulus: #111111; /* 18.88:1 */
+  --inpage-accent: #2d6a3e; /* fit outline on host pages */
+  --inpage-casing: #ffffff; /* 1px casing each side of in-page marks */
+  --badge-accent: #2d6a3e; /* chrome.action badge: change count (white text) */
+  --badge-warn: #f0b45c; /* chrome.action badge: "!" (ink text) */
+
+  /* ---------- 2. Type ---------- */
+  --font-sans:
+    'WebAble Sans', 'WebAble Sans Fallback', system-ui, -apple-system,
+    'Segoe UI', Roboto, sans-serif;
+  --font-mono:
+    'WebAble Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-layer:
+    system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; /* in-page layer only */
+  --weight-regular: 400;
+  --weight-medium: 540;
+  --weight-strong: 700; /* inline <strong> only */
+  --weight-mono: 450;
+
+  --text-display: 2.5rem; /* 40 → 64 at ≥64em */
+  --text-h1: 2rem; /* 32 → 44 */
+  --text-h2: 1.625rem; /* 26 → 32 */
+  --text-h3: 1.375rem; /* 22 → 24 */
+  --text-title: 1.25rem; /* 20 */
+  --text-lead: 1.25rem; /* 20 */
+  --text-body: 1.125rem; /* 18 reading */
+  --text-ui: 1rem; /* 16 */
+  --text-label: 1rem; /* 16 @ medium */
+  --text-meta: 0.9375rem; /* 15 — THE FLOOR */
+  --text-mono: 0.9375rem; /* 15 */
+  --text-readout: 1.75rem; /* 28 mono, results page */
+
+  --leading-display: 1.04;
+  --leading-h1: 1.08;
+  --leading-h2: 1.15;
+  --leading-h3: 1.25;
+  --leading-title: 1.3;
+  --leading-lead: calc(1.5 + var(--wa-leading-add));
+  --leading-body: calc(1.6 + var(--wa-leading-add));
+  --leading-ui: calc(1.5 + var(--wa-leading-add));
+  --leading-label: 1.25;
+  --leading-meta: calc(1.45 + var(--wa-leading-add));
+  --leading-mono: 1.45;
+  --leading-readout: 1.1;
+
+  --track-display: -0.022em;
+  --track-h1: -0.018em;
+  --track-h2: -0.012em;
+  --track-h3: -0.006em;
+  --track-readout: -0.01em;
+  --track-text: 0; /* title, lead, body, ui, label */
+  --track-meta: 0.006em;
+
+  /* ---------- 3. Space (4px base; rem, so it scales with text) ---------- */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-0-5: 0.125rem; /*   2 */
+  --space-1: 0.25rem; /*   4 */
+  --space-2: 0.5rem; /*   8 */
+  --space-3: 0.75rem; /*  12 */
+  --space-4: 1rem; /*  16 */
+  --space-5: 1.25rem; /*  20 */
+  --space-6: 1.5rem; /*  24 */
+  --space-8: 2rem; /*  32 */
+  --space-10: 2.5rem; /*  40 */
+  --space-12: 3rem; /*  48 */
+  --space-16: 4rem; /*  64 */
+  --space-20: 5rem; /*  80 */
+  --space-24: 6rem; /*  96 */
+  --space-32: 8rem; /* 128 */
+  --stack-tight: calc(0.5rem * var(--wa-space-scale));
+  --stack: calc(1rem * var(--wa-space-scale));
+  --stack-loose: calc(1.5rem * var(--wa-space-scale));
+  --gutter: 1rem; /* 16 → 24 at ≥48em → 48 at ≥64em */
+  --section-y: 4rem; /* 64 → 96 at ≥48em → 128 at ≥64em */
+  --section-head-gap: 3rem; /* section header → content */
+
+  /* ---------- 4. Layout ---------- */
+  --w-prose: 35rem; /* 560 ≈ 67 characters at 18px (avg advance 0.463em) */
+  --w-form: 30rem; /* 480 sign-in, account forms */
+  --w-task: 45rem; /* 720 calibration column */
+  --w-content: 76rem; /* 1216 */
+  --w-wide: 90rem; /* 1440 hero media */
+  --w-modal: 35rem; /* 560 */
+  --w-rail: 15rem; /* 240 app rail */
+  --w-popup: 380px; /* fixed: larger text reflows inside it instead of widening the popup */
+  --h-popup-max: 600px; /* Chrome cap */
+  --w-toast: 27.5rem; /* 440 */
+  --w-tooltip: 17.5rem; /* 280 */
+  --w-inpage-chip: 25rem; /* 400 */
+  --header-h: 3.5rem; /* 56 → 64 at ≥64em */
+  --popup-header-h: 3.5rem; /* 56 */
+  --popup-footer-h: 3rem; /* 48 */
+  --popup-pad: 1rem; /* 16 → content 348 at scale 1 */
+  --task-bar-h: 4rem; /* 64 calibration top bar */
+  --task-actions-h: 6rem; /* 96 calibration action bar */
+  --stage-min-h: 22.5rem; /* 360 */
+
+  /* ---------- 5. Targets and controls ---------- */
+  --target-min: max(
+    2.75rem,
+    var(--wa-target-min)
+  ); /* 44 default; profile can raise */
+  --control-sm: 2.25rem; /* 36 visual, hit area = --target-min (dense app tables only) */
+  --control-md: 2.75rem; /* 44 icon buttons, nav, row actions, toast, in-page chip */
+  --control-lg: 3rem; /* 48 default button, input, popup primary, offer pair */
+  --control-task: 4rem; /* 64 calibration responses and navigation */
+  --row-min: 3.5rem; /* 56 list, switch, disclosure rows */
+  --switch-w: 3.25rem; /* 52 */
+  --switch-h: 2rem; /* 32 */
+  --switch-thumb: 1.25rem; /* 20 */
+  --checkbox: 1.25rem; /* 20 */
+  --slider-track: 0.375rem; /* 6 */
+  --slider-thumb: 1.75rem; /* 28 */
+  --focus-width: 3px;
+  --focus-offset: 2px;
+  --focus-halo: 7px; /* white halo behind the ring, in-page layer only */
+
+  /* ---------- 6. Shape ---------- */
+  --radius-0: 0; /* measurement: fit marks, index rule, ruler */
+  --radius-1: 4px; /* checkbox, kbd, tooltip, fit-mark plate */
+  --radius-2: 8px; /* input, select, media, row hover, payload well */
+  --radius-3: 12px; /* panel, popover, toast, offer block, in-page chip */
+  --radius-4: 20px; /* modal, sheet, hero/preview frame */
+  --radius-pill: 999px; /* every action: button, switch, segmented, status pill */
+  --bw-hair: 1px;
+  --bw-control: 1px;
+  --bw-strong: 2px;
+
+  /* ---------- 7. Elevation (floating layers only) ---------- */
+  --elev-0: none;
+  --elev-float:
+    0 0 0 1px var(--line), 0 1px 2px rgb(26 26 23 / 0.06),
+    0 12px 32px -12px rgb(26 26 23 / 0.22);
+  --elev-modal: 0 0 0 1px var(--line), 0 24px 64px -16px rgb(26 26 23 / 0.32);
+  --elev-inpage:
+    0 0 0 1px var(--line-strong), 0 2px 4px rgb(26 26 23 / 0.1),
+    0 16px 40px -12px rgb(26 26 23 / 0.36);
+  --blur-header: 12px; /* the only blur */
+
+  /* ---------- 8. Motion ---------- */
+  --dur-1: 100ms; /* colour/opacity: hover, press tint */
+  --dur-2: 160ms; /* switch thumb, segmented indicator, checkbox, chevron */
+  --dur-3: 220ms; /* popover, menu, tooltip, toast, popup sub-view enter */
+  --dur-3-exit: 150ms;
+  --dur-4: 300ms; /* modal, sheet enter */
+  --dur-4-exit: 210ms;
+  --dur-expand: 220ms; /* disclosure height */
+  --dur-draw: 600ms; /* fit-mark draw: website hero only, once per session */
+  --delay-status: 300ms; /* "Checking…" appears only if work exceeds this */
+  --delay-tooltip: 500ms;
+  --loop-analyzing: 1000ms; /* arc rotation period */
+  --stop-analyzing: 5000ms; /* arc stops; label becomes "Still checking" */
+  --ease: cubic-bezier(
+    0.22,
+    0.8,
+    0.26,
+    1
+  ); /* the one curve: decisive start, soft settle */
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+  --ease-linear: linear; /* progress arc only */
+  --shift-1: 4px;
+  --shift-2: 8px; /* maximum travel for anything */
+  --scale-enter: 0.98;
+  --press-shift: 1px;
+
+  /* ---------- 9. Layers ---------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 100;
+  --z-header: 200;
+  --z-dropdown: 300;
+  --z-popover: 350;
+  --z-scrim: 400;
+  --z-modal: 410;
+  --z-toast: 500;
+  --z-tooltip: 600;
+  --z-skip: 700;
+  --z-inpage: 2147483600; /* WebAble's shadow host on third-party pages */
+}
+
+/* ---------- Breakpoints (em: respond to the browser's default size) ----------
+   sm 30em (480) · md 48em (768) · lg 64em (1024) · xl 80em (1280)
+   Popup/side-panel components use container queries: stack pairs below 21.25rem (340). */
+@media (min-width: 48em) {
+  :root {
+    --gutter: 1.5rem;
+    --section-y: 6rem;
+  }
+}
+@media (min-width: 64em) {
+  :root {
+    --gutter: 3rem;
+    --section-y: 8rem;
+    --header-h: 4rem;
+    --text-display: 4rem;
+    --text-h1: 2.75rem;
+    --text-h2: 2rem;
+    --text-h3: 1.5rem;
+  }
+}
+
+/* ---------- Dark theme: system preference (unless the user chose light) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --canvas: #141412;
+    --surface-raised: #1c1c19;
+    --surface-tonal: #232320;
+    --surface-hover: #2c2c28;
+    --surface-press: #35352f;
+    --surface-inverse: #edece6;
+    --surface-inverse-hover: #d6d5ce;
+    --ink: #edece6;
+    --ink-2: #c9c8bf;
+    --ink-3: #a4a399;
+    --on-inverse: #141412;
+    --on-inverse-2: #45443e;
+    --on-inverse-accent: #2d6a3e;
+    --line: #2f2f2a;
+    --line-strong: #85847b;
+    --accent: #8fcb9b;
+    --accent-hover: #a9d9b2;
+    --accent-tint: #1b2b1f;
+    --on-accent: #0f1a12;
+    --action: #edece6;
+    --action-hover: #ffffff;
+    --action-press: #d3d2ca;
+    --on-action: #141412;
+    --warning: #f2b75e;
+    --warning-icon: #f2b75e;
+    --warning-tint: #2e2412;
+    --danger: #ff9d93;
+    --danger-hover: #ffb7af;
+    --danger-tint: #3a1b18;
+    --on-danger: #141412;
+    --selection: #2f4a36;
+    --focus: #edece6;
+    --focus-inverse: #141412;
+    --scrim: rgb(0 0 0 / 0.64);
+    --header-bg: rgb(20 20 18 / 0.92);
+    --fit-fill: rgb(143 203 155 / 0.1);
+    --font-smoothing: antialiased;
+    --weight-medium: 520;
+    --track-text: 0.008em;
+    --track-meta: 0.012em;
+    --elev-float:
+      inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.08),
+      0 16px 40px -12px rgb(0 0 0 / 0.7);
+    --elev-modal:
+      inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.08),
+      0 24px 64px -16px rgb(0 0 0 / 0.75);
+    --elev-inpage:
+      0 0 0 1px var(--line-strong), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+  }
+}
+
+/* ---------- Dark theme: explicit user choice ---------- */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --canvas: #141412;
+  --surface-raised: #1c1c19;
+  --surface-tonal: #232320;
+  --surface-hover: #2c2c28;
+  --surface-press: #35352f;
+  --surface-inverse: #edece6;
+  --surface-inverse-hover: #d6d5ce;
+  --ink: #edece6;
+  --ink-2: #c9c8bf;
+  --ink-3: #a4a399;
+  --on-inverse: #141412;
+  --on-inverse-2: #45443e;
+  --on-inverse-accent: #2d6a3e;
+  --line: #2f2f2a;
+  --line-strong: #85847b;
+  --accent: #8fcb9b;
+  --accent-hover: #a9d9b2;
+  --accent-tint: #1b2b1f;
+  --on-accent: #0f1a12;
+  --action: #edece6;
+  --action-hover: #ffffff;
+  --action-press: #d3d2ca;
+  --on-action: #141412;
+  --warning: #f2b75e;
+  --warning-icon: #f2b75e;
+  --warning-tint: #2e2412;
+  --danger: #ff9d93;
+  --danger-hover: #ffb7af;
+  --danger-tint: #3a1b18;
+  --on-danger: #141412;
+  --selection: #2f4a36;
+  --focus: #edece6;
+  --focus-inverse: #141412;
+  --scrim: rgb(0 0 0 / 0.64);
+  --header-bg: rgb(20 20 18 / 0.92);
+  --fit-fill: rgb(143 203 155 / 0.1);
+  --font-smoothing: antialiased;
+  --weight-medium: 520;
+  --track-text: 0.008em;
+  --track-meta: 0.012em;
+  --elev-float:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 16px 40px -12px rgb(0 0 0 / 0.7);
+  --elev-modal:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 24px 64px -16px rgb(0 0 0 / 0.75);
+  --elev-inpage:
+    0 0 0 1px var(--line-strong), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+}
+
+/* ---------- Scoped themes ----------
+   Any element below the root can pin a theme for its subtree with data-theme
+   (component gallery, "Original / Fitted" previews, side-by-side reviews).
+   Values are identical to the root blocks above; scripts/contrast.mjs checks
+   that every copy of a theme stays in sync. */
+[data-theme='light']:not(:root) {
+  color-scheme: light;
+  --canvas: #fafaf7; /* paper */
+  --surface-raised: #ffffff; /* inputs, popovers, selected segment, in-page chip */
+  --surface-tonal: #f2f1ec; /* footer, offer block, wells, segmented track, status pill */
+  --surface-hover: #e9e8e2;
+  --surface-press: #dfded7;
+  --surface-inverse: #1f1f1c; /* toast, tooltip */
+  --surface-inverse-hover: #34342f;
+  --ink: #1a1a17; /* 16.68 on canvas */
+  --ink-2: #45443e; /*  9.34 on canvas; ≥ 7.24 everywhere */
+  --ink-3: #5e5d56; /*  6.32 on canvas; ≥ 4.90 everywhere */
+  --on-inverse: #f3f2ec;
+  --on-inverse-2: #c9c8c0;
+  --on-inverse-accent: #9dd1a6;
+  --line: #e0dfd8; /* decorative hairline, 1.28:1 — never a control's only edge */
+  --line-strong: #7d7c73; /* control boundary, ≥ 3.11 on every surface */
+  --accent: #2d6a3e; /* fern: "WebAble changed this, or offers to" */
+  --accent-hover: #22552f;
+  --accent-tint: #e4efe6;
+  --on-accent: #ffffff;
+  --action: #1a1a17; /* primary button fill */
+  --action-hover: #3a3934;
+  --action-press: #000000;
+  --on-action: #ffffff;
+  --warning: #7a4800; /* text */
+  --warning-icon: #a36200; /* glyph */
+  --warning-tint: #faefd9;
+  --danger: #a3241c;
+  --danger-hover: #85190f;
+  --danger-tint: #fbe9e6;
+  --on-danger: #ffffff;
+  --selection: #cfe2d3;
+  --focus: #1a1a17;
+  --focus-inverse: #f3f2ec; /* applied inside .wa-inverse */
+  --scrim: rgb(26 26 23 / 0.28);
+  --header-bg: rgb(250 250 247 / 0.92);
+  --fit-fill: rgb(45 106 62 / 0.06);
+  --font-smoothing: auto;
+  --weight-medium: 540;
+  --track-text: 0;
+  --track-meta: 0.006em;
+  --elev-float:
+    0 0 0 1px var(--line), 0 1px 2px rgb(26 26 23 / 0.06),
+    0 12px 32px -12px rgb(26 26 23 / 0.22);
+  --elev-modal: 0 0 0 1px var(--line), 0 24px 64px -16px rgb(26 26 23 / 0.32);
+  --elev-inpage:
+    0 0 0 1px var(--line-strong), 0 2px 4px rgb(26 26 23 / 0.1),
+    0 16px 40px -12px rgb(26 26 23 / 0.36);
+}
+[data-theme='dark']:not(:root) {
+  color-scheme: dark;
+  --canvas: #141412;
+  --surface-raised: #1c1c19;
+  --surface-tonal: #232320;
+  --surface-hover: #2c2c28;
+  --surface-press: #35352f;
+  --surface-inverse: #edece6;
+  --surface-inverse-hover: #d6d5ce;
+  --ink: #edece6;
+  --ink-2: #c9c8bf;
+  --ink-3: #a4a399;
+  --on-inverse: #141412;
+  --on-inverse-2: #45443e;
+  --on-inverse-accent: #2d6a3e;
+  --line: #2f2f2a;
+  --line-strong: #85847b;
+  --accent: #8fcb9b;
+  --accent-hover: #a9d9b2;
+  --accent-tint: #1b2b1f;
+  --on-accent: #0f1a12;
+  --action: #edece6;
+  --action-hover: #ffffff;
+  --action-press: #d3d2ca;
+  --on-action: #141412;
+  --warning: #f2b75e;
+  --warning-icon: #f2b75e;
+  --warning-tint: #2e2412;
+  --danger: #ff9d93;
+  --danger-hover: #ffb7af;
+  --danger-tint: #3a1b18;
+  --on-danger: #141412;
+  --selection: #2f4a36;
+  --focus: #edece6;
+  --focus-inverse: #141412;
+  --scrim: rgb(0 0 0 / 0.64);
+  --header-bg: rgb(20 20 18 / 0.92);
+  --fit-fill: rgb(143 203 155 / 0.1);
+  --font-smoothing: antialiased;
+  --weight-medium: 520;
+  --track-text: 0.008em;
+  --track-meta: 0.012em;
+  --elev-float:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 16px 40px -12px rgb(0 0 0 / 0.7);
+  --elev-modal:
+    inset 0 1px 0 rgb(255 255 255 / 0.06), 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 24px 64px -16px rgb(0 0 0 / 0.75);
+  --elev-inpage:
+    0 0 0 1px var(--line-strong), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+}
+
+/* ---------- Reduced motion: OS setting ---------- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-2: 0ms;
+    --dur-3: 100ms;
+    --dur-3-exit: 100ms;
+    --dur-4: 100ms;
+    --dur-4-exit: 100ms;
+    --dur-expand: 0ms;
+    --dur-draw: 0ms;
+    --loop-analyzing: 0ms;
+    --shift-1: 0px;
+    --shift-2: 0px;
+    --scale-enter: 1;
+    --press-shift: 0px;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* ---------- Reduced motion: WebAble profile (same values) ---------- */
+:root[data-wa-motion='reduce'] {
+  --dur-2: 0ms;
+  --dur-3: 100ms;
+  --dur-3-exit: 100ms;
+  --dur-4: 100ms;
+  --dur-4-exit: 100ms;
+  --dur-expand: 0ms;
+  --dur-draw: 0ms;
+  --loop-analyzing: 0ms;
+  --shift-1: 0px;
+  --shift-2: 0px;
+  --scale-enter: 1;
+  --press-shift: 0px;
+}
+:root[data-wa-motion='reduce'] *,
+:root[data-wa-motion='reduce'] *::before,
+:root[data-wa-motion='reduce'] *::after {
+  animation-duration: 1ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+}
+
+/* ---------- More contrast: OS setting or profile. Specificity (0,2,0) and placed after
+   the theme blocks so it wins over them; data-wa-contrast="standard" opts out. ---------- */
+@media (prefers-contrast: more) {
+  :root:not([data-wa-contrast='standard']),
+  :root:not([data-wa-contrast='standard']) [data-theme] {
+    --ink-2: var(--ink);
+    --ink-3: var(--ink);
+    --line: var(--line-strong);
+    --focus-width: 4px;
+    --fit-fill: transparent;
+  }
+}
+:root[data-wa-contrast='more'],
+:root[data-wa-contrast='more'] [data-theme] {
+  --ink-2: var(--ink);
+  --ink-3: var(--ink);
+  --line: var(--line-strong);
+  --focus-width: 4px;
+  --fit-fill: transparent;
+}
+
+/* ---------- Reduced transparency: solid header, no blur ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  :root:not([data-wa-transparency='standard']) {
+    --header-bg: var(--canvas);
+    --blur-header: 0px;
+  }
+}
+
+/* ---------- Forced colours (Windows contrast themes) ---------- */
+@media (forced-colors: active) {
+  :root:not([data-wa-forced='off']),
+  :root:not([data-wa-forced='off']) [data-theme] {
+    --fit-fill: transparent;
+  } /* (0,2,0): wins over the theme blocks */
+  :focus-visible {
+    outline-color: Highlight;
+  }
+  .wa-btn,
+  .wa-input,
+  .wa-switch__track,
+  .wa-segmented,
+  .wa-checkbox {
+    border-color: ButtonText;
+  }
+  .wa-status-glyph,
+  .wa-fit-mark,
+  .wa-ruler {
+    forced-color-adjust: auto;
+  }
+}
