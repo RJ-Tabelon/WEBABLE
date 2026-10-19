@@ -14,4 +14,9 @@ export * from './page/excluded';
 
 export * from './explain/glossary';
 
+export * from './fit/types';
+export * from './fit/typeramp';
+export * from './fit/solver';
+export * from './fit/structure';
+
 export * from './triage/types';
