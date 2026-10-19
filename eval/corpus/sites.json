@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "description": "Fixed real-site test corpus for WebAble adaptations. Keep this list stable so regression results stay comparable across runs.",
+  "rules": {
+    "readOnly": true,
+    "noLogins": "Never automate a login on a real site. Only the public banking demo uses its published demo credentials, entered by hand.",
+    "noPurchases": true,
+    "noScraping": "Load the listed pages only; do not crawl or store page content beyond test results."
+  },
+  "sites": [
+    {
+      "id": "gov-benefits",
+      "category": "government",
+      "name": "USA.gov benefits",
+      "url": "https://www.usa.gov/benefits",
+      "persona": "A",
+      "why": "Core benefits-lookup task; dense navigation.",
+      "pages": ["/benefits"]
+    },
+    {
+      "id": "gov-ssa",
+      "category": "government",
+      "name": "Social Security Administration",
+      "url": "https://www.ssa.gov",
+      "persona": "A",
+      "why": "Already well built; baseline for detecting harm caused by adaptations.",
+      "pages": ["/"]
+    },
+    {
+      "id": "gov-tax-forms",
+      "category": "government-forms",
+      "name": "IRS forms and instructions",
+      "url": "https://www.irs.gov/forms-instructions",
+      "persona": "B",
+      "why": "Long, jargon-heavy form pages.",
+      "pages": ["/forms-instructions"]
+    },
+    {
+      "id": "shop-pharmacy",
+      "category": "shopping",
+      "name": "CVS",
+      "url": "https://www.cvs.com",
+      "persona": "A",
+      "why": "Popups, carousels, realistic density. Browse and search only.",
+      "pages": ["/"]
+    },
+    {
+      "id": "shop-ecommerce",
+      "category": "shopping",
+      "name": "Target",
+      "url": "https://www.target.com",
+      "persona": "B",
+      "why": "Cluttered layout, small targets, distractors. Browse and search only.",
+      "pages": ["/"]
+    },
+    {
+      "id": "news-npr",
+      "category": "news",
+      "name": "NPR",
+      "url": "https://www.npr.org",
+      "persona": "A",
+      "why": "Reading tasks for text size, spacing, width and contrast.",
+      "pages": ["/"]
+    },
+    {
+      "id": "bank-parabank",
+      "category": "banking-demo",
+      "name": "ParaBank (Parasoft demo bank)",
+      "url": "https://parabank.parasoft.com/parabank/index.htm",
+      "persona": "B",
+      "why": "Public demo bank: safe login and transfer flows with no real data.",
+      "pages": ["/parabank/index.htm"]
+    },
+    {
+      "id": "control-uw-au",
+      "category": "controlled",
+      "name": "Accessible University (before/after)",
+      "url": "https://www.washington.edu/accesscomputing/AU/",
+      "persona": "all",
+      "why": "Controlled ground truth: the same page exists in inaccessible and accessible states.",
+      "pages": ["/before.html", "/after.html"]
+    },
+    {
+      "id": "control-w3c-bad",
+      "category": "controlled",
+      "name": "W3C Before and After Demonstration",
+      "url": "https://www.w3.org/WAI/demos/bad/",
+      "persona": "all",
+      "why": "Second controlled corpus, standards-authored.",
+      "pages": ["/before/home.html", "/after/home.html"]
+    },
+    {
+      "id": "spa-todomvc",
+      "category": "spa",
+      "name": "TodoMVC (React)",
+      "url": "https://todomvc.com/examples/react/dist/",
+      "persona": "all",
+      "why": "Stress test for mutation observation and re-render survival.",
+      "pages": ["/"]
+    }
+  ]
+}
