@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Apply for benefits assistance (Form BA-1)</title>
+    <style>
+      body {
+        font-family: Verdana, sans-serif;
+        font-size: 18px;
+        line-height: 1.5;
+        color: #1a1a1a;
+      }
+      label {
+        display: block;
+        margin-top: 16px;
+      }
+      button {
+        font-size: 18px;
+        padding: 12px 20px;
+        background: #1d4ed8;
+        color: #fff;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Apply for benefits assistance (Form BA-1)</h1>
+      <p>Fill in every field marked required. This takes about 5 minutes.</p>
+      <form>
+        <label for="name">Full legal name (required)</label>
+        <input id="name" type="text" autocomplete="name" required />
+        <label for="dob">Date of birth (required)</label>
+        <input id="dob" type="date" autocomplete="bday" required />
+        <label for="household">Household size</label>
+        <select id="household">
+          <option>1</option>
+          <option>2</option>
+          <option>3 or more</option>
+        </select>
+        <label
+          ><input type="checkbox" required /> I certify the information above is
+          true</label
+        >
+        <button type="submit">Submit application</button>
+      </form>
+    </main>
+  </body>
+</html>

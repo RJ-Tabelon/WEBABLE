@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Form</title>
+    <style>
+      body {
+        font-family: Verdana, sans-serif;
+        font-size: 11px;
+        color: #777;
+      }
+      .req {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <div><b>Application for Benefits Assistance (Form BA-1)</b></div>
+    <div>
+      Pursuant to the eligibility determination provisions, applicants must
+      furnish all requisite information.
+    </div>
+    <form>
+      Full legal name <span class="req">*</span><br />
+      <input type="text" /><br />
+      Date of birth <span class="req">*</span><br />
+      <input type="text" /><br />
+      Household size<br />
+      <select>
+        <option>1</option>
+        <option>2</option>
+        <option>3+</option></select
+      ><br />
+      <input type="checkbox" /> I certify the above is true<br />
+      <div
+        onclick="alert('submitted')"
+        style="background: #ccc; color: #eee; width: 60px"
+      >
+        Submit
+      </div>
+    </form>
+  </body>
+</html>
