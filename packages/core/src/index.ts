@@ -12,6 +12,12 @@ export * from './page/vocab';
 export * from './page/vocab-check';
 export * from './page/excluded';
 
+export * from './decide/wire';
+export * from './decide/catalog';
+
+export * from './jev/api';
+export * from './jev/client';
+
 export * from './explain/glossary';
 
 export * from './fit/types';
