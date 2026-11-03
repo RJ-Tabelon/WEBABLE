@@ -37,6 +37,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
+      - uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.9.8
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Lint and formatting
@@ -45,6 +48,8 @@ jobs:
         run: pnpm typecheck
       - name: Unit tests
         run: pnpm test
+      - name: Backend typecheck and authentication tests
+        run: pnpm test:functions
       - name: Install Chromium
         run: pnpm --filter @webable/extension exec playwright install --with-deps chromium
       - name: Extension e2e and axe accessibility tests
