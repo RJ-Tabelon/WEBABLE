@@ -19,8 +19,9 @@
     "prepare": "husky",
     "test": "pnpm -r --if-present test",
     "test:e2e": "pnpm --filter @webable/extension test:e2e",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test",
-    "verify": "pnpm check && pnpm test:e2e && pnpm build && pnpm extension:check"
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:functions",
+    "verify": "pnpm check && pnpm test:e2e && pnpm build && pnpm extension:check",
+    "test:functions": "node supabase/tests/deno-test.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",
