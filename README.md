@@ -54,9 +54,9 @@ pnpm verify
 
 On Linux, use `playwright install --with-deps chromium` to include operating-system dependencies.
 
-- `pnpm test`: Vitest + jsdom; permission and manifest boundary tests.
+- `pnpm test`: Vitest in every workspace package; the extension suite runs in jsdom and covers permission and manifest boundaries.
 - `pnpm test:e2e`: builds an e2e extension, then Playwright verifies the service worker, popup, axe WCAG A/AA checks, and runtime content-script injection on a local fixture.
-- `pnpm check`: formatting, lint, TypeScript and unit tests.
+- `pnpm check`: formatting and lint, then typecheck and unit tests in every workspace package.
 - `pnpm verify`: all checks, e2e, production build and package validation.
 
 The e2e build grants access only to `http://127.0.0.1:4173/*`. Always load the production `chrome-mv3` directory for normal use; the package check rejects test host permissions.
