@@ -15,7 +15,6 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@webable/core": "workspace:*",
     "@webable/tokens": "workspace:*",
     "lucide-react": "1.48.0",
     "react-aria-components": "1.21.1"

@@ -24,7 +24,7 @@ Decorative by default; supply a label only when the icon itself conveys meaning.
 
 ```tsx
 import { Icon } from '@webable/ui';
-<Icon name="settings" size={20} />
+<Icon name="settings" size={20} />;
 ```
 
 ### CheckGlyph
@@ -34,7 +34,7 @@ import { Icon } from '@webable/ui';
 
 ```tsx
 import { CheckGlyph } from '@webable/ui';
-<CheckGlyph size={14} />
+<CheckGlyph size={14} />;
 ```
 
 ### FitArrow
@@ -45,7 +45,7 @@ meaningful value text separately.
 
 ```tsx
 import { FitArrow } from '@webable/ui';
-<FitArrow size={20} />
+<FitArrow size={20} />;
 ```
 
 ### Mark
@@ -56,7 +56,7 @@ when the standalone mark needs an accessible name.
 
 ```tsx
 import { Mark } from '@webable/ui';
-<Mark size={24} title="WebAble" />
+<Mark size={24} title="WebAble" />;
 ```
 
 ### StatusShape
@@ -66,7 +66,7 @@ import { Mark } from '@webable/ui';
 
 ```tsx
 import { StatusShape } from '@webable/ui';
-<StatusShape state="adapted" size={20} />
+<StatusShape state="adapted" size={20} />;
 ```
 
 ### Wordmark
@@ -77,7 +77,7 @@ The visible word supplies the name; the adjacent mark is decorative.
 
 ```tsx
 import { Wordmark } from '@webable/ui';
-<Wordmark withMark />
+<Wordmark withMark />;
 ```
 
 ### LinkProvider
@@ -89,7 +89,7 @@ preserve its accessible link behavior.
 
 ```tsx
 import { LinkProvider } from '@webable/ui';
-<LinkProvider component={AppLink}>{children}</LinkProvider>
+<LinkProvider component={AppLink}>{children}</LinkProvider>;
 ```
 
 ### Anchor
@@ -101,7 +101,7 @@ ordinary anchors.
 
 ```tsx
 import { Anchor } from '@webable/ui';
-<Anchor href="/settings">Settings</Anchor>
+<Anchor href="/settings">Settings</Anchor>;
 ```
 
 ### OverlayContainer
@@ -112,7 +112,7 @@ Useful for keeping overlays within a themed subtree or shadow root.
 
 ```tsx
 import { OverlayContainer } from '@webable/ui';
-<OverlayContainer container={overlayRoot}>{children}</OverlayContainer>
+<OverlayContainer container={overlayRoot}>{children}</OverlayContainer>;
 ```
 
 ## Actions and links
@@ -125,7 +125,10 @@ meaningful; narrow layouts wrap or stack the actions.
 
 ```tsx
 import { Actions, Button } from '@webable/ui';
-<Actions sizing="equal"><Button>Keep</Button><Button>Cancel</Button></Actions>
+<Actions sizing="equal">
+  <Button>Keep</Button>
+  <Button>Cancel</Button>
+</Actions>;
 ```
 
 ### Button
@@ -136,7 +139,9 @@ Use clear action text; disabled buttons stay focusable and announce their state.
 
 ```tsx
 import { Button } from '@webable/ui';
-<Button variant="primary" onClick={save}>Save changes</Button>
+<Button variant="primary" onClick={save}>
+  Save changes
+</Button>;
 ```
 
 ### IconButton
@@ -147,7 +152,7 @@ provide the accessible `label`; the tooltip is supplementary.
 
 ```tsx
 import { IconButton } from '@webable/ui';
-<IconButton icon="x" label="Close" onClick={close} />
+<IconButton icon="x" label="Close" onClick={close} />;
 ```
 
 ### TextLink
@@ -158,7 +163,7 @@ text; external links announce that they open in a new tab.
 
 ```tsx
 import { TextLink } from '@webable/ui';
-<TextLink href="/help">Read the help guide</TextLink>
+<TextLink href="/help">Read the help guide</TextLink>;
 ```
 
 ## Inputs
@@ -172,7 +177,11 @@ disabled reasons are announced via `aria-describedby`.
 
 ```tsx
 import { SwitchRow } from '@webable/ui';
-<SwitchRow label="WebAble on this site" checked={enabled} onCheckedChange={setEnabled} />
+<SwitchRow
+  label="WebAble on this site"
+  checked={enabled}
+  onCheckedChange={setEnabled}
+/>;
 ```
 
 ### Checkbox
@@ -184,7 +193,9 @@ required status in words in the label.
 
 ```tsx
 import { Checkbox } from '@webable/ui';
-<Checkbox checked={accepted} onCheckedChange={setAccepted}>I agree</Checkbox>
+<Checkbox checked={accepted} onCheckedChange={setAccepted}>
+  I agree
+</Checkbox>;
 ```
 
 ### SegmentedControl
@@ -196,7 +207,12 @@ tabindex, and arrow/Home/End keyboard navigation are built in.
 
 ```tsx
 import { SegmentedControl } from '@webable/ui';
-<SegmentedControl label="Theme" options={themes} value={theme} onValueChange={setTheme} />
+<SegmentedControl
+  label="Theme"
+  options={themes}
+  value={theme}
+  onValueChange={setTheme}
+/>;
 ```
 
 ### Slider
@@ -209,7 +225,12 @@ alternative.
 
 ```tsx
 import { Slider } from '@webable/ui';
-<Slider label="Text size" steps={[14, 16, 18, 21]} value={size} onValueChange={setSize} />
+<Slider
+  label="Text size"
+  steps={[14, 16, 18, 21]}
+  value={size}
+  onValueChange={setSize}
+/>;
 ```
 
 ### Hint
@@ -220,7 +241,7 @@ control with `aria-describedby`.
 
 ```tsx
 import { Hint } from '@webable/ui';
-<Hint id="email-hint">Use the address for your account.</Hint>
+<Hint id="email-hint">Use the address for your account.</Hint>;
 ```
 
 ### TextField
@@ -232,7 +253,7 @@ props:** `label`, `hint`, `error`, `required`, `type`, standard input props.
 
 ```tsx
 import { TextField } from '@webable/ui';
-<TextField label="Email" type="email" autoComplete="email" error={error} />
+<TextField label="Email" type="email" autoComplete="email" error={error} />;
 ```
 
 ### Select
@@ -244,7 +265,12 @@ label and descriptions.
 
 ```tsx
 import { Select } from '@webable/ui';
-<Select label="Language" options={languages} value={language} onChange={chooseLanguage} />
+<Select
+  label="Language"
+  options={languages}
+  value={language}
+  onChange={chooseLanguage}
+/>;
 ```
 
 ## Disclosure and overlays
@@ -258,7 +284,7 @@ collapsed content remains discoverable by find-in-page.
 
 ```tsx
 import { Disclosure } from '@webable/ui';
-<Disclosure title="Details">More information goes here.</Disclosure>
+<Disclosure title="Details">More information goes here.</Disclosure>;
 ```
 
 ### Tooltip
@@ -270,7 +296,9 @@ it. Never use it as the only label or for links.
 
 ```tsx
 import { IconButton, Tooltip } from '@webable/ui';
-<Tooltip content="More about this setting"><IconButton icon="info" label="About this setting" /></Tooltip>
+<Tooltip content="More about this setting">
+  <IconButton icon="info" label="About this setting" />
+</Tooltip>;
 ```
 
 ### Dialog
@@ -282,7 +310,9 @@ modal focus, closes on Escape, and restores focus to the opener.
 
 ```tsx
 import { Dialog } from '@webable/ui';
-<Dialog open={open} onOpenChange={setOpen} title="Delete data?">This cannot be undone.</Dialog>
+<Dialog open={open} onOpenChange={setOpen} title="Delete data?">
+  This cannot be undone.
+</Dialog>;
 ```
 
 ### Sheet
@@ -294,7 +324,9 @@ and accessible-title behavior.
 
 ```tsx
 import { Sheet } from '@webable/ui';
-<Sheet open={open} onOpenChange={setOpen} title="Menu" placement="full">{children}</Sheet>
+<Sheet open={open} onOpenChange={setOpen} title="Menu" placement="full">
+  {children}
+</Sheet>;
 ```
 
 ### Toast
@@ -306,7 +338,7 @@ polite live region.
 
 ```tsx
 import { Toast } from '@webable/ui';
-<Toast message="Text size updated." applied onDismiss={dismiss} />
+<Toast message="Text size updated." applied onDismiss={dismiss} />;
 ```
 
 ### ToastProvider
@@ -318,7 +350,7 @@ restores focus if it was inside a toast that leaves.
 
 ```tsx
 import { ToastProvider } from '@webable/ui';
-<ToastProvider placement="site">{children}</ToastProvider>
+<ToastProvider placement="site">{children}</ToastProvider>;
 ```
 
 ## Status, fit, and structure
@@ -331,7 +363,7 @@ with a status word.
 
 ```tsx
 import { StatusGlyph } from '@webable/ui';
-<StatusGlyph state="checking" />
+<StatusGlyph state="checking" />;
 ```
 
 ### StatusLine
@@ -342,7 +374,7 @@ The status text remains visible alongside its decorative glyph.
 
 ```tsx
 import { StatusLine } from '@webable/ui';
-<StatusLine state="adapted" title="Adapted · 3 changes" as="h1" />
+<StatusLine state="adapted" title="Adapted · 3 changes" as="h1" />;
 ```
 
 ### StatusPill
@@ -353,7 +385,7 @@ text; the shape and color are additional cues.
 
 ```tsx
 import { StatusPill } from '@webable/ui';
-<StatusPill state="paused" />
+<StatusPill state="paused" />;
 ```
 
 ### FitDigits
@@ -364,7 +396,7 @@ remains part of the same readable value.
 
 ```tsx
 import { FitDigits } from '@webable/ui';
-<FitDigits>4.5:1</FitDigits>
+<FitDigits>4.5:1</FitDigits>;
 ```
 
 ### FitUnit
@@ -375,7 +407,10 @@ expansion, see `FitMark`.
 
 ```tsx
 import { FitDigits, FitUnit } from '@webable/ui';
-<><FitDigits>18</FitDigits><FitUnit unit="px" /></>
+<>
+  <FitDigits>18</FitDigits>
+  <FitUnit unit="px" />
+</>;
 ```
 
 ### FitMark
@@ -387,7 +422,7 @@ spoken value.
 
 ```tsx
 import { FitMark } from '@webable/ui';
-<FitMark label="Text size" from={13} to={18} unit="px" />
+<FitMark label="Text size" from={13} to={18} unit="px" />;
 ```
 
 ### FitMarkBlock
@@ -398,7 +433,7 @@ image role with an accessible name containing the measurement and spoken unit.
 
 ```tsx
 import { FitMarkBlock } from '@webable/ui';
-<FitMarkBlock label="Text size" from={13} to={18} unit="px" />
+<FitMarkBlock label="Text size" from={13} to={18} unit="px" />;
 ```
 
 ### FitValue
@@ -410,7 +445,15 @@ complete `srText`, not the decorative visual.
 
 ```tsx
 import { FitValue } from '@webable/ui';
-<FitValue value={{ kind: 'change', before: 16, after: 19, unit: 'px', srText: '16 to 19 pixels' }} />
+<FitValue
+  value={{
+    kind: 'change',
+    before: 16,
+    after: 19,
+    unit: 'px',
+    srText: '16 to 19 pixels',
+  }}
+/>;
 ```
 
 ### FitRow
@@ -422,7 +465,14 @@ row label; choose the level to fit the surrounding outline.
 
 ```tsx
 import { FitRow } from '@webable/ui';
-<FitRow label="Text size" headingLevel={3} sentence="Text reads best at 19 px." value={fit} density="working" changed />
+<FitRow
+  label="Text size"
+  headingLevel={3}
+  sentence="Text reads best at 19 px."
+  value={fit}
+  density="working"
+  changed
+/>;
 ```
 
 ### IndexRule
@@ -433,7 +483,7 @@ technology.
 
 ```tsx
 import { IndexRule } from '@webable/ui';
-<IndexRule />
+<IndexRule />;
 ```
 
 ### SectionHeader
@@ -445,7 +495,7 @@ hierarchy.
 
 ```tsx
 import { SectionHeader } from '@webable/ui';
-<SectionHeader as="h2" title="Your fit" deck="Settings for this site." />
+<SectionHeader as="h2" title="Your fit" deck="Settings for this site." />;
 ```
 
 ### EmptyState
@@ -456,7 +506,9 @@ Choose the title element to match the surrounding heading outline.
 
 ```tsx
 import { Button, EmptyState } from '@webable/ui';
-<EmptyState title="No sites yet." action={<Button>Add a site</Button>}>Changed sites appear here.</EmptyState>
+<EmptyState title="No sites yet." action={<Button>Add a site</Button>}>
+  Changed sites appear here.
+</EmptyState>;
 ```
 
 ### ErrorPanel
@@ -468,7 +520,13 @@ error immediately; details use a disclosure.
 
 ```tsx
 import { Button, ErrorPanel } from '@webable/ui';
-<ErrorPanel title="Could not save" live action={<Button onClick={retry}>Try again</Button>}>Your changes are safe. Please retry.</ErrorPanel>
+<ErrorPanel
+  title="Could not save"
+  live
+  action={<Button onClick={retry}>Try again</Button>}
+>
+  Your changes are safe. Please retry.
+</ErrorPanel>;
 ```
 
 ### Kbd
@@ -479,7 +537,7 @@ being pressed.
 
 ```tsx
 import { Kbd } from '@webable/ui';
-<Kbd>Esc</Kbd>
+<Kbd>Esc</Kbd>;
 ```
 
 ### VisuallyHidden
@@ -490,7 +548,7 @@ is necessary to understand the interface.
 
 ```tsx
 import { VisuallyHidden } from '@webable/ui';
-<VisuallyHidden>Opens in a new window</VisuallyHidden>
+<VisuallyHidden>Opens in a new window</VisuallyHidden>;
 ```
 
 ### ProgressRuler
@@ -502,7 +560,7 @@ ordered list exposes each step and marks the current step.
 
 ```tsx
 import { ProgressRuler } from '@webable/ui';
-<ProgressRuler sections={sections} current={1} taskIndex={2} />
+<ProgressRuler sections={sections} current={1} taskIndex={2} />;
 ```
 
 ### OfferBlock
@@ -514,7 +572,11 @@ named by its question and described by its reason.
 
 ```tsx
 import { OfferBlock } from '@webable/ui';
-<OfferBlock question="Make buttons bigger here?" onAccept={accept} onDecline={decline} />
+<OfferBlock
+  question="Make buttons bigger here?"
+  onAccept={accept}
+  onDecline={decline}
+/>;
 ```
 
 ## Related hooks and utilities
