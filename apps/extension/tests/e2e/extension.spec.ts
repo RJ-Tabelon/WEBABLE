@@ -25,8 +25,9 @@ test('loads the service worker, accessible popup, and runtime content bundle', a
     const popup = await context.newPage();
     await popup.goto(`chrome-extension://${id}/popup.html`);
     await expect(popup.getByRole('heading', { name: 'WebAble' })).toBeVisible();
+    await expect(popup.getByRole('switch', { name: 'WebAble' })).toBeVisible();
     await expect(
-      popup.getByText('Website adaptations are coming soon.'),
+      popup.getByRole('button', { name: 'Your settings' }),
     ).toBeVisible();
     const audit = await new AxeBuilder({ page: popup })
       .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])

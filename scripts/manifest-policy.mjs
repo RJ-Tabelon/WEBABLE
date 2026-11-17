@@ -11,7 +11,7 @@ export function validateManifest(manifest) {
     throw new Error('Module service worker is required.');
   if (
     JSON.stringify([...(manifest.permissions ?? [])].sort()) !==
-    JSON.stringify(['activeTab', 'scripting'])
+    JSON.stringify(['activeTab', 'scripting', 'storage'])
   )
     throw new Error('Unexpected production permissions.');
   if (

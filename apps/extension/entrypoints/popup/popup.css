@@ -1,0 +1,201 @@
+/* Owner: P, F. The toolbar popup, in the onboarding's look (docs/design/ONBOARDING.md): pure white page (round 8c),
+   a white card with a hairline border, near-black ink, one deep green accent for "WebAble is on". */
+:root {
+  --canvas: #ffffff;
+  --card: #ffffff;
+  --ink: #16150f;
+  --ink-2: #5e5c55;
+  --ink-3: #8b8880;
+  --line: #e6e3dc;
+  --line-strong: #d4d0c6;
+  --accent: #17694a;
+  --shadow-card:
+    0 1px 2px rgba(22, 21, 15, 0.04), 0 12px 40px rgba(22, 21, 15, 0.06);
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --font:
+    system-ui, -apple-system, 'SF Pro Text', 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--canvas);
+}
+body {
+  width: 320px;
+  font: 400 16px/22px var(--font);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+button {
+  font: inherit;
+  color: inherit;
+}
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.p {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px;
+}
+
+.p-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+.p-head h1 {
+  flex: 1;
+  margin: 0;
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  color: var(--ink);
+  width: 28px;
+  height: 28px;
+}
+.mark .wa-logo {
+  display: block;
+}
+.mark[data-on='false'] {
+  color: var(--ink-3);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  padding: 16px 16px 8px 20px;
+}
+.site {
+  margin: 0;
+  font-size: 15px;
+  line-height: 20px;
+  color: var(--ink-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.site-none {
+  margin: 0 0 8px;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--ink-2);
+}
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 52px;
+}
+.row[data-dim='true'] {
+  opacity: 0.5;
+}
+.row-label {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.sw {
+  flex: none;
+  appearance: none;
+  margin: 0;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 999px;
+}
+.sw[disabled] {
+  cursor: default;
+}
+.sw-track {
+  position: relative;
+  display: block;
+  width: 51px;
+  height: 31px;
+  border-radius: 999px;
+  background: var(--line-strong);
+  transition: background-color 200ms var(--ease);
+}
+.sw-track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 200ms var(--ease);
+}
+.sw[aria-checked='true'] .sw-track::after {
+  transform: translateX(20px);
+}
+.sw[aria-checked='true'][data-tone='accent'] .sw-track {
+  background: var(--accent);
+}
+.sw[aria-checked='true'][data-tone='ink'] .sw-track {
+  background: var(--ink);
+}
+
+.btn {
+  appearance: none;
+  width: 100%;
+  min-height: 56px;
+  padding: 0 24px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 200ms var(--ease),
+    transform 200ms var(--ease);
+}
+.btn:hover {
+  background: #fbfaf7;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+
+.foot {
+  margin: 0;
+  padding: 0 4px;
+  font-size: 15px;
+  line-height: 21px;
+  color: var(--ink-2);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0ms !important;
+  }
+}

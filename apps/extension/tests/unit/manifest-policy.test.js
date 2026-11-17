@@ -3,7 +3,7 @@ import { validateManifest } from '../../../../scripts/manifest-policy.mjs';
 
 const manifest = () => ({
   manifest_version: 3,
-  permissions: ['scripting', 'activeTab'],
+  permissions: ['scripting', 'activeTab', 'storage'],
   action: { default_popup: 'popup.html' },
   background: { service_worker: 'background.js', type: 'module' },
 });
@@ -14,7 +14,7 @@ describe('production permission boundary', () => {
   });
   it.each([
     { manifest_version: 2 },
-    { permissions: ['activeTab', 'scripting', 'tabs'] },
+    { permissions: ['activeTab', 'scripting', 'storage', 'tabs'] },
     { permissions: ['activeTab'] },
     { host_permissions: ['<all_urls>'] },
     { optional_host_permissions: ['<all_urls>'] },
