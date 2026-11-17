@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <title>WebAble</title>
+  <rect width="32" height="32" rx="6" fill="#1A1A17"/>
+  <g transform="translate(16 16) scale(1.76) translate(-12 -11.5)" fill="none" stroke="#FAFAF7" stroke-width="1.42" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6 8h12M6 5v6M18 5v6M6 14h12M6 18h8"/>
+  </g>
+</svg>

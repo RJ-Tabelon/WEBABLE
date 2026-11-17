@@ -1,0 +1,26 @@
+{
+  "name": "@webable/tokens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    ".": "./src/index.ts",
+    "./tokens.css": "./src/tokens.css",
+    "./base.css": "./src/base.css",
+    "./fonts.css": "./src/fonts.css"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "contrast": "node scripts/contrast.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-mono": "5.3.0",
+    "@fontsource-variable/atkinson-hyperlegible-next": "5.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.2"
+  }
+}

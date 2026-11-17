@@ -1,12 +1,73 @@
 :root {
+  color-scheme: light dark;
   font-family: system-ui, sans-serif;
-  color: #17213b;
-  background: #fff;
+  color: #1a1a17;
+  background: #fafaf7;
 }
+
 body {
   margin: 0;
   min-width: 320px;
 }
-main {
+
+.popup {
+  box-sizing: border-box;
+  display: grid;
+  gap: 24px;
+  inline-size: min(360px, 100vw);
   padding: 24px;
+}
+
+.popup__brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.popup__brand img {
+  border-radius: 6px;
+}
+
+.popup__brand h1,
+.popup__message h2,
+.popup__message p {
+  margin: 0;
+}
+
+.popup__brand h1 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.popup__message {
+  display: grid;
+  gap: 8px;
+  padding-block-start: 16px;
+  border-block-start: 1px solid #7d7c73;
+}
+
+.popup__message h2 {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.popup__message p {
+  color: #45443e;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #edece6;
+    background: #141412;
+  }
+
+  .popup__message {
+    border-color: #85847b;
+  }
+
+  .popup__message p {
+    color: #c9c8bf;
+  }
 }
