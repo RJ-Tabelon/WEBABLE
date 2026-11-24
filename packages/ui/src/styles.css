@@ -1,0 +1,2376 @@
+/*
+ * @webable/ui component styles ("Made to Measure", design-final.md §7-§12).
+ * Semantic tokens only (packages/tokens/src/tokens.css). Class prefix `wa-`.
+ *
+ * Conventions
+ * - min-height, never height, on anything that holds text.
+ * - Hover lives under (hover: hover) and (pointer: fine).
+ * - Pressed = press surface + translateY(--press-shift), never a scale.
+ * - Disabled is never faded: aria-disabled, ink-3 label, dashed line-strong edge.
+ * - State hooks `data-hovered`, `data-pressed`, `data-focus-visible` mirror the
+ *   pseudo-classes (React Aria uses them; the gallery uses them to pin states).
+ * - --accent appears only where WebAble changed something or offers to:
+ *   fit after-values, the adapted glyph, page-changing switch/slider fills,
+ *   the offer rule and the toast's applied check.
+ */
+
+/* =========================================================================
+   0. Shared
+   ========================================================================= */
+
+.wa-icon,
+.wa-mark,
+.wa-check-glyph,
+.wa-fit-arrow,
+.wa-status-glyph {
+  flex-shrink: 0;
+}
+
+[data-focus-visible]:not(:focus-visible) {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.wa-reason {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+}
+
+.wa-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Equal pairs sit side by side while there are 340 px for them (21.25rem, the
+   popup container breakpoint) and wrap to full-width rows below that. */
+.wa-actions--equal {
+  gap: var(--space-2);
+}
+.wa-actions--equal > * {
+  flex: 1 1 calc((21.25rem - var(--space-2)) / 2);
+  min-inline-size: 0;
+}
+
+@media (max-width: 29.99em) {
+  .wa-actions:not(.wa-actions--equal) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .wa-actions:not(.wa-actions--equal) > .wa-btn {
+    inline-size: 100%;
+  }
+  /* A ghost has no edge, so a full-width ghost would float its label in the
+     middle of nothing. It keeps its natural width on the text edge. */
+  .wa-actions:not(.wa-actions--equal) > .wa-btn--ghost {
+    inline-size: auto;
+    align-self: flex-start;
+  }
+}
+
+/* =========================================================================
+   1. Button (§7.1)
+   ========================================================================= */
+
+.wa-btn {
+  --_h: var(--control-lg);
+  --_px: var(--space-5);
+  --_gap: var(--space-2);
+  --_font: var(--text-label);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_gap);
+  min-block-size: max(var(--_h), var(--target-min));
+  padding: var(--space-2) var(--_px);
+  border: var(--bw-control) solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--_font);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--track-text);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Colour only; the press translate is added under no-preference (below). */
+  transition:
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+
+.wa-btn__label {
+  min-inline-size: 0;
+}
+
+.wa-btn--sm {
+  --_h: var(--control-sm);
+  --_px: 0.875rem;
+  --_gap: 0.375rem;
+  --_font: var(--text-meta);
+  min-block-size: var(--control-sm);
+  padding-block: var(--space-1);
+}
+/* 36 px visual, hit area extended to the target minimum. */
+.wa-btn--sm::after {
+  content: '';
+  position: absolute;
+  inset-block: calc((var(--control-sm) - var(--target-min)) / 2);
+  inset-inline: 0;
+}
+
+.wa-btn--md {
+  --_h: var(--control-md);
+  --_px: var(--space-4);
+}
+
+.wa-btn--lg {
+  --_h: var(--control-lg);
+  --_px: var(--space-5);
+}
+
+.wa-btn--task {
+  --_h: var(--control-task);
+  --_px: 1.75rem;
+  --_gap: 0.625rem;
+  --_font: var(--text-body);
+}
+
+.wa-btn--block {
+  inline-size: 100%;
+}
+
+/* Flush: the label (not the pill) sits on the text edge, within the 1 px of
+   the pill's transparent border. The padding hangs outside the column (never
+   more than the 16 px gutter of an md button); hover and press still show it. */
+.wa-btn--flush-start {
+  margin-inline-start: calc(-1 * var(--_px));
+}
+.wa-btn--flush-end {
+  margin-inline-end: calc(-1 * var(--_px));
+}
+
+/* Primary: the one ink button per region. */
+.wa-btn--primary {
+  background: var(--action);
+  color: var(--on-action);
+}
+
+/* Secondary: line-strong edge. */
+.wa-btn--secondary {
+  border-color: var(--line-strong);
+}
+
+/* Danger outline. */
+.wa-btn--danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Danger filled: final confirm in a modal only. */
+.wa-btn--danger-filled {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-btn--primary:is(:hover, [data-hovered]):not([aria-disabled='true']) {
+    background: var(--action-hover);
+  }
+  .wa-btn--secondary:is(:hover, [data-hovered]):not([aria-disabled='true']),
+  .wa-btn--ghost:is(:hover, [data-hovered]):not([aria-disabled='true']) {
+    background: var(--surface-hover);
+  }
+  .wa-btn--danger:is(:hover, [data-hovered]):not([aria-disabled='true']) {
+    background: var(--danger-tint);
+  }
+  .wa-btn--danger-filled:is(:hover, [data-hovered]):not(
+      [aria-disabled='true']
+    ) {
+    background: var(--danger-hover);
+  }
+}
+
+.wa-btn--primary:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--action-press);
+}
+.wa-btn--secondary:is(:active, [data-pressed]):not([aria-disabled='true']),
+.wa-btn--ghost:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--surface-press);
+}
+.wa-btn--danger:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--danger-tint);
+}
+.wa-btn--danger-filled:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--danger-hover);
+}
+
+.wa-btn[aria-disabled='true'] {
+  color: var(--ink-3);
+  border-style: dashed;
+  cursor: not-allowed;
+}
+.wa-btn--primary[aria-disabled='true'] {
+  background: var(--surface-tonal);
+  border-color: var(--line-strong);
+}
+.wa-btn--secondary[aria-disabled='true'],
+.wa-btn--danger[aria-disabled='true'] {
+  border-color: var(--line-strong);
+}
+
+.wa-btn[aria-busy='true'] {
+  cursor: progress;
+}
+
+/* =========================================================================
+   2. Icon button
+   ========================================================================= */
+
+.wa-icon-btn {
+  --_size: max(var(--control-md), var(--target-min));
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  padding: 0;
+  border: var(--bw-control) solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink-2);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease),
+    border-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+
+.wa-icon-btn--lg {
+  --_size: max(var(--control-lg), var(--target-min));
+}
+
+.wa-icon-btn--secondary {
+  border-color: var(--line-strong);
+  color: var(--ink);
+}
+
+.wa-icon-btn--inverse {
+  color: var(--on-inverse);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-icon-btn:is(:hover, [data-hovered]):not([aria-disabled='true']) {
+    background: var(--surface-hover);
+    color: var(--ink);
+  }
+  .wa-icon-btn--inverse:is(:hover, [data-hovered]):not([aria-disabled='true']) {
+    background: var(--surface-inverse-hover);
+    color: var(--on-inverse);
+  }
+}
+
+.wa-icon-btn:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--surface-press);
+}
+.wa-icon-btn--inverse:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--surface-inverse-hover);
+}
+
+.wa-icon-btn[aria-disabled='true'] {
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+.wa-icon-btn--secondary[aria-disabled='true'] {
+  border-style: dashed;
+}
+
+/* Press motion (§12): background plus a 1 px drop. Under reduced motion, from
+   the OS or from the WebAble profile, a press is colour only: the translate and
+   its transition are never declared, so no transform animation can start. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-wa-motion='reduce'])
+    :is(.wa-btn, .wa-icon-btn, .wa-toast__action) {
+    transition:
+      background-color var(--dur-1) var(--ease),
+      border-color var(--dur-1) var(--ease),
+      color var(--dur-1) var(--ease),
+      translate var(--dur-1) var(--ease);
+  }
+  :root:not([data-wa-motion='reduce'])
+    .wa-btn:is(:active, [data-pressed]):not(
+      [aria-disabled='true'],
+      [aria-busy='true']
+    ),
+  :root:not([data-wa-motion='reduce'])
+    .wa-icon-btn:is(:active, [data-pressed]):not([aria-disabled='true']),
+  :root:not([data-wa-motion='reduce'])
+    .wa-toast__action:is(:active, [data-pressed]) {
+    translate: 0 var(--press-shift);
+  }
+}
+
+/* =========================================================================
+   3. Link (§7.2)
+   ========================================================================= */
+
+.wa-link {
+  color: var(--ink);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  border-radius: var(--radius-1);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-link:is(:hover, [data-hovered]) {
+    text-decoration-thickness: 2px;
+  }
+}
+
+.wa-link:is(:active, [data-pressed]) {
+  color: var(--ink-2);
+}
+
+.wa-link__icon {
+  display: inline-block;
+  vertical-align: -0.125em;
+  margin-inline-start: 0.1875em;
+}
+
+/* A link that stands on its own line (not in running text) is a 44 px target. */
+.wa-link--standalone {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--target-min);
+  font-weight: var(--weight-medium);
+}
+
+/* =========================================================================
+   4. Switch row (§7.3)
+   ========================================================================= */
+
+.wa-switch {
+  --_on: var(--action);
+  --_on-thumb: var(--on-action);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: var(--space-3);
+  inline-size: calc(100% + 2 * var(--space-2));
+  min-block-size: max(var(--row-min), var(--target-min));
+  margin-inline: calc(-1 * var(--space-2));
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-2);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  letter-spacing: inherit;
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-1) var(--ease);
+}
+
+.wa-switch[data-accent] {
+  --_on: var(--accent);
+  --_on-thumb: var(--on-accent);
+}
+
+.wa-switch__text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0-5);
+  min-inline-size: 0;
+}
+
+.wa-switch__label {
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+}
+
+.wa-switch__desc {
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+}
+
+.wa-switch__state {
+  min-inline-size: 1.75rem;
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+  text-align: end;
+}
+
+.wa-switch__track {
+  position: relative;
+  display: block;
+  inline-size: var(--switch-w);
+  block-size: var(--switch-h);
+  border: var(--bw-strong) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  transition:
+    background-color var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease);
+}
+
+.wa-switch__thumb {
+  position: absolute;
+  inset-block-start: 0.25rem;
+  inset-inline-start: 0.25rem;
+  display: grid;
+  place-items: center;
+  inline-size: var(--switch-thumb);
+  block-size: var(--switch-thumb);
+  border-radius: 50%;
+  background: var(--ink-2);
+  color: var(--_on);
+  transition:
+    translate var(--dur-2) var(--ease),
+    background-color var(--dur-2) var(--ease);
+}
+
+.wa-switch__check {
+  opacity: 0;
+  transition: opacity var(--dur-1) var(--ease);
+}
+
+.wa-switch[aria-checked='true'] .wa-switch__track {
+  border-color: var(--_on);
+  background: var(--_on);
+}
+.wa-switch[aria-checked='true'] .wa-switch__thumb {
+  translate: calc(
+      var(--switch-w) - var(--switch-thumb) - 0.5rem - 2 * var(--bw-strong)
+    )
+    0;
+  background: var(--_on-thumb);
+}
+.wa-switch[aria-checked='true']:dir(rtl) .wa-switch__thumb {
+  translate: calc(
+      -1 *
+        (var(--switch-w) - var(--switch-thumb) - 0.5rem - 2 * var(--bw-strong))
+    )
+    0;
+}
+.wa-switch[aria-checked='true'] .wa-switch__check {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-switch:is(:hover, [data-hovered]) {
+    background: var(--surface-hover);
+  }
+}
+.wa-switch:is(:active, [data-pressed]):not([aria-disabled='true']) {
+  background: var(--surface-press);
+}
+
+.wa-switch[aria-disabled='true'] {
+  cursor: not-allowed;
+}
+.wa-switch[aria-disabled='true'] .wa-switch__label,
+.wa-switch[aria-disabled='true'] .wa-switch__state {
+  color: var(--ink-3);
+}
+.wa-switch[aria-disabled='true'] .wa-switch__track {
+  border-style: dashed;
+  border-color: var(--line-strong);
+}
+.wa-switch[aria-disabled='true'] .wa-switch__thumb {
+  background: var(--ink-3);
+}
+.wa-switch[aria-disabled='true'][aria-checked='true'] .wa-switch__track {
+  background: var(--surface-tonal);
+}
+.wa-switch[aria-disabled='true'][aria-checked='true'] .wa-switch__check {
+  color: var(--surface-tonal);
+}
+
+.wa-switch-field .wa-reason {
+  margin-block-start: 0;
+}
+
+/* =========================================================================
+   5. Checkbox (§7.4)
+   ========================================================================= */
+
+.wa-checkbox {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-block-size: max(2.75rem, var(--target-min));
+  padding-block: 0.625rem;
+  color: var(--ink);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wa-checkbox__box {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--checkbox);
+  block-size: var(--checkbox);
+  margin-block-start: calc((1em * var(--leading-ui) - var(--checkbox)) / 2);
+  border: var(--bw-strong) solid var(--line-strong);
+  border-radius: var(--radius-1);
+  background: var(--surface-raised);
+  color: var(--on-action);
+  transition:
+    background-color var(--dur-2) var(--ease),
+    border-color var(--dur-2) var(--ease);
+}
+
+.wa-checkbox__bar {
+  inline-size: 10px;
+  block-size: 2px;
+  border-radius: 1px;
+  background: currentColor;
+}
+
+.wa-checkbox:is([data-selected], [data-indeterminate]) .wa-checkbox__box {
+  border-color: var(--action);
+  background: var(--action);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-checkbox[data-hovered]:not([data-disabled]):not(
+      [data-selected],
+      [data-indeterminate]
+    )
+    .wa-checkbox__box {
+    border-color: var(--ink-2);
+  }
+}
+
+.wa-checkbox[data-pressed]:not([data-selected], [data-indeterminate])
+  .wa-checkbox__box {
+  background: var(--surface-press);
+}
+
+.wa-checkbox[data-focus-visible] {
+  outline: none;
+}
+.wa-checkbox[data-focus-visible] .wa-checkbox__box {
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.wa-checkbox[data-disabled] {
+  cursor: not-allowed;
+  color: var(--ink-3);
+}
+.wa-checkbox[data-disabled] .wa-checkbox__box {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  background: var(--surface-tonal);
+  color: var(--ink-3);
+}
+
+/* =========================================================================
+   6. Segmented control (§7.5)
+   ========================================================================= */
+
+.wa-segmented {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: stretch;
+  max-inline-size: 100%;
+  min-block-size: calc(max(var(--control-md), var(--target-min)) + 0.5rem);
+  padding: var(--space-1);
+  border-radius: var(--radius-pill);
+  background: var(--surface-tonal);
+}
+
+.wa-segmented--fill {
+  display: flex;
+  inline-size: 100%;
+}
+.wa-segmented--fill .wa-segmented__item {
+  flex: 1 1 0;
+}
+
+.wa-segmented__indicator {
+  position: absolute;
+  z-index: 0;
+  inset-block: var(--space-1);
+  inset-inline-start: 0;
+  border: var(--bw-control) solid var(--line-strong);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  pointer-events: none;
+}
+
+.wa-segmented[data-animate] .wa-segmented__indicator {
+  transition:
+    transform var(--dur-2) var(--ease),
+    width var(--dur-2) var(--ease);
+}
+
+.wa-segmented__item {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-block-size: max(var(--control-md), var(--target-min));
+  padding: 0 var(--space-4);
+  border: var(--bw-control) solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--track-text);
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--dur-1) var(--ease),
+    color var(--dur-1) var(--ease);
+}
+
+/* Without the measured indicator (before hydration) the selected segment carries it. */
+.wa-segmented__item[aria-checked='true'] {
+  border-color: var(--line-strong);
+  background: var(--surface-raised);
+  color: var(--ink);
+  cursor: default;
+}
+.wa-segmented[data-ready] .wa-segmented__item[aria-checked='true'] {
+  border-color: transparent;
+  background: transparent;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-segmented__item:is(:hover, [data-hovered]):not(
+      [aria-checked='true'],
+      [aria-disabled='true']
+    ) {
+    background: var(--surface-hover);
+    color: var(--ink);
+  }
+}
+.wa-segmented__item:is(:active, [data-pressed]):not(
+    [aria-checked='true'],
+    [aria-disabled='true']
+  ) {
+  background: var(--surface-press);
+  color: var(--ink);
+}
+
+.wa-segmented__item[aria-disabled='true'] {
+  color: var(--ink-3);
+  cursor: not-allowed;
+}
+
+/* =========================================================================
+   7. Slider with steppers (§7.6)
+   ========================================================================= */
+
+.wa-slider {
+  --_fill: var(--ink);
+  --_hit: max(var(--control-md), var(--target-min));
+  --_mid: calc(var(--_hit) / 2);
+  display: grid;
+  gap: var(--space-3);
+}
+
+.wa-slider[data-accent] {
+  --_fill: var(--accent);
+}
+
+.wa-slider__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.wa-slider__label {
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+}
+
+.wa-slider__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  font-weight: var(--weight-mono);
+  line-height: var(--leading-mono);
+  color: var(--ink);
+  white-space: nowrap;
+}
+.wa-slider[data-accent] .wa-slider__value {
+  color: var(--accent);
+  font-weight: var(--weight-medium);
+}
+
+.wa-slider__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: var(--space-2);
+}
+
+.wa-slider__rail {
+  position: relative;
+  block-size: calc(var(--_hit) + 1.5rem);
+  margin-inline: calc(var(--slider-thumb) / 2 + var(--space-1));
+  touch-action: none;
+  cursor: pointer;
+}
+
+.wa-slider__track {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--_mid) - var(--slider-track) / 2);
+  block-size: var(--slider-track);
+  border-radius: var(--radius-pill);
+  background: var(--line-strong);
+  overflow: hidden;
+}
+
+.wa-slider__fill {
+  block-size: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--_fill);
+}
+
+.wa-slider__ticks {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--_mid) + var(--slider-track) / 2 + 0.25rem);
+  block-size: 0.5rem;
+}
+
+.wa-slider__tick {
+  position: absolute;
+  inset-block: 0;
+  inline-size: 1px;
+  translate: -50% 0;
+  background: var(--line-strong);
+}
+
+.wa-slider__thumb {
+  position: absolute;
+  inset-block-start: var(--_mid);
+  inline-size: var(--slider-thumb);
+  block-size: var(--slider-thumb);
+  translate: -50% -50%;
+  border: var(--bw-strong) solid var(--ink);
+  border-radius: 50%;
+  background: var(--surface-raised);
+  cursor: grab;
+  touch-action: none;
+  transition:
+    background-color var(--dur-1) var(--ease),
+    border-width var(--dur-1) var(--ease);
+}
+.wa-slider__thumb:dir(rtl) {
+  translate: 50% -50%;
+}
+.wa-slider__thumb::after {
+  content: '';
+  position: absolute;
+  inset: calc((var(--slider-thumb) - var(--_hit)) / 2 - var(--bw-strong));
+  border-radius: 50%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-slider:not([data-disabled]) .wa-slider__rail:hover .wa-slider__thumb,
+  .wa-slider__thumb[data-hovered] {
+    border-width: 3px;
+  }
+}
+
+.wa-slider__rail[data-dragging] .wa-slider__thumb,
+.wa-slider__thumb[data-pressed] {
+  background: var(--surface-press);
+  cursor: grabbing;
+}
+
+.wa-slider__steps {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(var(--_mid) + var(--slider-track) / 2 + 0.875rem);
+}
+
+.wa-slider__step {
+  position: absolute;
+  translate: -50% 0;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-3);
+  white-space: nowrap;
+}
+.wa-slider__step:dir(rtl) {
+  translate: 50% 0;
+}
+.wa-slider__step:not(.wa-slider__step--end) {
+  display: none;
+}
+@media (min-width: 30em) {
+  .wa-slider__step:not(.wa-slider__step--end) {
+    display: block;
+  }
+}
+.wa-slider__step--current {
+  color: var(--ink);
+}
+
+.wa-slider[data-disabled] .wa-slider__rail {
+  cursor: not-allowed;
+}
+.wa-slider[data-disabled] .wa-slider__fill {
+  background: var(--line-strong);
+}
+.wa-slider[data-disabled] .wa-slider__thumb {
+  border-style: dashed;
+  border-color: var(--line-strong);
+  cursor: not-allowed;
+}
+.wa-slider[data-disabled] .wa-slider__label,
+.wa-slider[data-disabled] .wa-slider__value {
+  color: var(--ink-3);
+}
+
+/* =========================================================================
+   8. Fields: text input and select (§7.7)
+   ========================================================================= */
+
+.wa-field {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.wa-field__label {
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  color: var(--ink);
+}
+
+.wa-field__required {
+  font-weight: var(--weight-regular);
+  color: var(--ink-2);
+}
+
+.wa-input {
+  display: block;
+  inline-size: 100%;
+  min-block-size: max(var(--control-lg), var(--target-min));
+  margin: 0;
+  padding: var(--space-2) 0.875rem;
+  border: var(--bw-control) solid var(--line-strong);
+  border-radius: var(--radius-2);
+  background: var(--surface-raised);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+  letter-spacing: var(--track-text);
+  transition:
+    border-color var(--dur-1) var(--ease),
+    box-shadow var(--dur-1) var(--ease);
+}
+
+.wa-input::placeholder {
+  color: var(--ink-3);
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-input:is(:hover, [data-hovered]):not(
+      :disabled,
+      [readonly],
+      [aria-invalid='true']
+    ) {
+    border-color: var(--ink-2);
+  }
+}
+
+.wa-input:is(:focus-visible, [data-focus-visible]) {
+  border-color: var(--ink);
+  outline: var(--focus-width) solid var(--focus);
+  outline-offset: var(--focus-offset);
+}
+
+.wa-input[aria-invalid='true'] {
+  border-color: var(--danger);
+  box-shadow: inset 0 0 0 1px var(--danger);
+}
+
+.wa-input:disabled {
+  border-style: dashed;
+  background: var(--surface-tonal);
+  color: var(--ink-3);
+  cursor: not-allowed;
+  -webkit-text-fill-color: var(--ink-3);
+}
+
+.wa-input[readonly] {
+  border-color: var(--line);
+  background: var(--surface-tonal);
+}
+
+.wa-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--danger);
+}
+.wa-field__error .wa-icon {
+  margin-block-start: 0.0625rem;
+}
+
+.wa-field__hint {
+  margin: 0;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+}
+
+.wa-select {
+  position: relative;
+  display: block;
+}
+
+.wa-select__control {
+  appearance: none;
+  padding-inline-end: 2.75rem;
+  cursor: pointer;
+}
+.wa-select__control:disabled {
+  cursor: not-allowed;
+}
+
+.wa-select__chevron {
+  position: absolute;
+  inset-inline-end: 0.875rem;
+  inset-block-start: 50%;
+  translate: 0 -50%;
+  color: var(--ink-2);
+  pointer-events: none;
+}
+
+/* =========================================================================
+   9. Disclosure (§7.12)
+   ========================================================================= */
+
+.wa-disclosure {
+  border-block: var(--bw-hair) solid var(--line);
+}
+.wa-disclosure + .wa-disclosure {
+  margin-block-start: calc(-1 * var(--bw-hair));
+}
+
+.wa-disclosure__heading {
+  margin: 0;
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+.wa-disclosure__trigger {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  inline-size: calc(100% + 2 * var(--space-2));
+  min-block-size: max(var(--row-min), var(--target-min));
+  margin-inline: calc(-1 * var(--space-2));
+  padding: var(--space-2);
+  border: 0;
+  border-radius: var(--radius-2);
+  background: transparent;
+  color: var(--ink);
+  font-family: inherit;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-text);
+  text-align: start;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-1) var(--ease);
+}
+
+.wa-disclosure--compact .wa-disclosure__trigger {
+  font-size: var(--text-label);
+}
+
+.wa-disclosure__title {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+}
+
+.wa-disclosure__meta {
+  font-size: var(--text-meta);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+}
+
+.wa-disclosure__chevron {
+  display: grid;
+  place-items: center;
+  color: var(--ink-2);
+  transition: rotate var(--dur-2) var(--ease);
+}
+.wa-disclosure[data-open] .wa-disclosure__chevron {
+  rotate: 180deg;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-disclosure__trigger:is(:hover, [data-hovered]) {
+    background: var(--surface-hover);
+  }
+}
+.wa-disclosure__trigger:is(:active, [data-pressed]) {
+  background: var(--surface-press);
+}
+
+.wa-disclosure__region {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--dur-expand) var(--ease);
+}
+.wa-disclosure[data-open] > .wa-disclosure__region {
+  grid-template-rows: 1fr;
+}
+
+/* The panel clips while it animates; the inline bleed keeps focus rings visible. */
+.wa-disclosure__panel {
+  min-block-size: 0;
+  margin-inline: -0.375rem;
+  padding-inline: 0.375rem;
+  overflow: hidden;
+}
+
+.wa-disclosure__inner {
+  max-inline-size: var(--w-prose);
+  padding: var(--space-2) 0 var(--space-6);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink-2);
+}
+.wa-disclosure__inner > * + * {
+  margin-block-start: var(--stack);
+}
+
+.wa-disclosure--compact .wa-disclosure__inner {
+  padding: var(--space-1) 0 var(--space-4);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+/* =========================================================================
+   10. Tooltip (§7.15)
+   ========================================================================= */
+
+.wa-tooltip {
+  z-index: var(--z-tooltip);
+  max-inline-size: var(--w-tooltip);
+  padding: var(--space-2) 0.625rem;
+  border-radius: var(--radius-1);
+  background: var(--surface-inverse);
+  color: var(--on-inverse);
+  font-family: var(--font-sans);
+  font-size: var(--text-meta);
+  line-height: 1.45;
+  letter-spacing: var(--track-meta);
+  -webkit-font-smoothing: var(--font-smoothing);
+}
+
+.wa-tooltip[data-entering] {
+  animation: wa-tooltip-in var(--dur-3) var(--ease);
+}
+.wa-tooltip[data-exiting] {
+  animation: wa-fade-out var(--dur-3-exit) var(--ease-exit) forwards;
+}
+
+@keyframes wa-tooltip-in {
+  from {
+    opacity: 0;
+    translate: 0 var(--shift-1);
+  }
+}
+
+.wa-tooltip[data-placement='bottom'][data-entering] {
+  animation-name: wa-tooltip-in-down;
+}
+@keyframes wa-tooltip-in-down {
+  from {
+    opacity: 0;
+    translate: 0 calc(-1 * var(--shift-1));
+  }
+}
+
+/* =========================================================================
+   11. Toast (§7.14)
+   ========================================================================= */
+
+.wa-toast-region {
+  position: fixed;
+  z-index: var(--z-toast);
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+.wa-toast-region:empty {
+  display: block;
+}
+
+.wa-toast-region--site {
+  inset-inline: var(--space-4);
+  inset-block-end: var(--space-6);
+}
+
+.wa-toast-region--popup {
+  inset-inline: var(--popup-pad);
+  inset-block-end: calc(var(--popup-footer-h) + var(--space-2));
+}
+
+.wa-toast-region--layer {
+  inset-inline-end: var(--space-4);
+  inset-block-end: var(--space-4);
+  justify-content: flex-end;
+}
+
+.wa-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  inline-size: 100%;
+  max-inline-size: var(--w-toast);
+  min-block-size: 3.5rem;
+  padding: 0.375rem var(--space-2) 0.375rem var(--space-4);
+  border-radius: var(--radius-3);
+  background: var(--surface-inverse);
+  box-shadow: var(--elev-float);
+  color: var(--on-inverse);
+  pointer-events: auto;
+}
+
+.wa-toast-region .wa-toast {
+  animation: wa-rise-in var(--dur-3) var(--ease);
+}
+.wa-toast-region .wa-toast[data-exiting] {
+  animation: wa-fade-out var(--dur-3-exit) var(--ease-exit) forwards;
+}
+
+.wa-toast__check {
+  color: var(--on-inverse-accent);
+}
+
+.wa-toast__alert {
+  color: var(--on-inverse);
+}
+
+.wa-toast__message {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  margin: 0;
+  padding-block: var(--space-2);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+.wa-toast__action {
+  flex: none;
+  min-block-size: max(var(--control-md), var(--target-min));
+  padding: 0 var(--space-4);
+  border: var(--bw-control) solid var(--on-inverse-2);
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--on-inverse);
+  font-family: inherit;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  cursor: pointer;
+  transition: background-color var(--dur-1) var(--ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .wa-toast__action:is(:hover, [data-hovered]) {
+    background: var(--surface-inverse-hover);
+  }
+}
+.wa-toast__action:is(:active, [data-pressed]) {
+  background: var(--surface-inverse-hover);
+}
+
+.wa-toast__close {
+  margin-inline-start: calc(-1 * var(--space-1));
+}
+
+@keyframes wa-rise-in {
+  from {
+    opacity: 0;
+    translate: 0 var(--shift-2);
+  }
+}
+
+@keyframes wa-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes wa-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* =========================================================================
+   12. Dialog and sheet (§7.16)
+   ========================================================================= */
+
+.wa-dialog {
+  inline-size: min(calc(100% - 2 * var(--gutter)), var(--w-modal));
+  max-inline-size: none;
+  max-block-size: calc(100dvh - 2 * var(--space-6));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-4);
+  background: var(--surface-raised);
+  box-shadow: var(--elev-modal);
+  color: var(--ink);
+  overflow: auto;
+  overscroll-behavior: contain;
+  opacity: 0;
+  transition:
+    opacity var(--dur-4-exit) var(--ease-exit),
+    overlay var(--dur-4-exit) allow-discrete,
+    display var(--dur-4-exit) allow-discrete;
+}
+
+.wa-dialog[open] {
+  opacity: 1;
+  transition-duration: var(--dur-4);
+  transition-timing-function: var(--ease);
+}
+
+@starting-style {
+  .wa-dialog[open] {
+    opacity: 0;
+  }
+}
+
+/* The 8 px rise exists only when motion is welcome (OS and WebAble profile);
+   under reduced motion a dialog fades in 100 ms and nothing moves. */
+@media (prefers-reduced-motion: no-preference) {
+  :root:not([data-wa-motion='reduce']) .wa-dialog {
+    translate: 0 var(--shift-2);
+    transition:
+      opacity var(--dur-4-exit) var(--ease-exit),
+      translate var(--dur-4-exit) var(--ease-exit),
+      overlay var(--dur-4-exit) allow-discrete,
+      display var(--dur-4-exit) allow-discrete;
+  }
+  :root:not([data-wa-motion='reduce']) .wa-dialog[open] {
+    translate: 0 0;
+    transition-duration: var(--dur-4);
+    transition-timing-function: var(--ease);
+  }
+  @starting-style {
+    :root:not([data-wa-motion='reduce']) .wa-dialog[open] {
+      translate: 0 var(--shift-2);
+    }
+  }
+}
+
+.wa-dialog::backdrop {
+  background: var(--scrim);
+  opacity: 0;
+  transition:
+    opacity var(--dur-4-exit) var(--ease-exit),
+    overlay var(--dur-4-exit) allow-discrete,
+    display var(--dur-4-exit) allow-discrete;
+}
+.wa-dialog[open]::backdrop {
+  opacity: 1;
+  transition-duration: var(--dur-4);
+}
+@starting-style {
+  .wa-dialog[open]::backdrop {
+    opacity: 0;
+  }
+}
+
+html:has(.wa-dialog[open]) {
+  overflow: hidden;
+}
+
+.wa-dialog__frame {
+  padding: var(--space-8);
+}
+
+.wa-dialog__header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.wa-dialog__header-start {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-block-size: max(var(--control-lg), var(--target-min));
+}
+
+.wa-dialog__title {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  padding-block-start: 0.5rem;
+  font-size: var(--text-h3);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-h3);
+  letter-spacing: var(--track-h3);
+}
+.wa-dialog__title:focus {
+  outline: none;
+}
+
+.wa-dialog__close {
+  margin-block-start: calc(-1 * var(--space-2));
+  margin-inline-end: calc(-1 * var(--space-2));
+}
+
+.wa-dialog__body {
+  display: grid;
+  gap: var(--space-4);
+  margin-block-start: var(--space-4);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+}
+
+.wa-dialog__desc {
+  margin: 0;
+  max-inline-size: var(--w-prose);
+  color: var(--ink-2);
+}
+
+.wa-dialog__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block-start: var(--space-4);
+}
+
+/* Below 48em: modal and bottom sheet both present as a bottom sheet. */
+@media (max-width: 47.99em) {
+  .wa-dialog--modal,
+  .wa-dialog--sheet-bottom {
+    inline-size: 100%;
+    max-block-size: 92dvh;
+    margin: auto 0 0;
+    border-radius: var(--radius-4) var(--radius-4) 0 0;
+  }
+  .wa-dialog--modal .wa-dialog__frame,
+  .wa-dialog--sheet-bottom .wa-dialog__frame {
+    padding: var(--space-6) var(--gutter)
+      calc(var(--space-6) + env(safe-area-inset-bottom));
+  }
+  .wa-dialog__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+/* Full-screen menu sheet on the canvas. */
+.wa-dialog--sheet-full {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  block-size: 100dvh;
+  max-block-size: 100dvh;
+  margin: 0;
+  border-radius: 0;
+  background: var(--canvas);
+  box-shadow: none;
+}
+
+.wa-dialog--sheet-full .wa-dialog__frame {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100%;
+  padding: 0;
+}
+
+.wa-dialog--sheet-full .wa-dialog__header {
+  align-items: center;
+  min-block-size: var(--header-h);
+  padding-inline: var(--gutter);
+  padding-inline-end: calc(var(--gutter) - var(--space-1));
+}
+
+.wa-dialog--sheet-full .wa-dialog__title {
+  padding: 0;
+  font-size: var(--text-title);
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-text);
+}
+
+.wa-dialog--sheet-full .wa-dialog__close {
+  margin: 0;
+}
+
+.wa-dialog--sheet-full .wa-dialog__body {
+  margin: 0;
+  padding: var(--space-2) var(--gutter) var(--space-6);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+.wa-dialog__footer {
+  margin-block-start: auto;
+  padding: var(--space-4) var(--gutter)
+    calc(var(--space-4) + env(safe-area-inset-bottom));
+}
+
+/* =========================================================================
+   13. Status (§7.13)
+   ========================================================================= */
+
+.wa-status-glyph {
+  color: var(--ink-2);
+  overflow: visible;
+}
+.wa-status-glyph--adapted {
+  color: var(--accent);
+}
+.wa-status-glyph--attention {
+  color: var(--warning-icon);
+}
+.wa-status-glyph__track {
+  stroke: var(--line-strong);
+}
+.wa-status-glyph__arc {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: wa-spin var(--loop-analyzing) var(--ease-linear) infinite;
+}
+.wa-status-glyph__half {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wa-status-glyph__arc {
+    display: none;
+  }
+  .wa-status-glyph__half {
+    display: inline;
+  }
+}
+:root[data-wa-motion='reduce'] .wa-status-glyph__arc {
+  display: none;
+}
+:root[data-wa-motion='reduce'] .wa-status-glyph__half {
+  display: inline;
+}
+
+@keyframes wa-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.wa-status-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-text);
+  color: var(--ink);
+}
+.wa-status-line[tabindex='-1']:focus {
+  outline: none;
+}
+
+.wa-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-block-size: 2rem;
+  padding: 0.25rem var(--space-3) 0.25rem 0.625rem;
+  border-radius: var(--radius-pill);
+  background: var(--surface-tonal);
+  color: var(--ink);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  letter-spacing: var(--track-meta);
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   14. Fit mark (§7.20, §8)
+   ========================================================================= */
+
+.wa-fit-mark {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-3);
+  row-gap: var(--space-0-5);
+}
+
+.wa-fit-mark__label {
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-label);
+  color: var(--ink);
+}
+
+.wa-fit-mark__value,
+.wa-fit-block__value {
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  font-weight: var(--weight-mono);
+  line-height: var(--leading-mono);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+.wa-fit-mark__visual,
+.wa-fit-block__value {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.wa-fit-mark__to {
+  color: var(--accent);
+  font-weight: var(--weight-medium);
+}
+
+.wa-fit-arrow {
+  inline-size: 0.8em;
+  block-size: 0.5333em;
+  color: var(--ink-2);
+  overflow: visible;
+}
+/* The 24-grid icon form (app rail): sized by its width/height attributes. */
+.wa-fit-arrow--icon {
+  inline-size: auto;
+  block-size: auto;
+  overflow: hidden;
+}
+
+.wa-fit-mark--readout .wa-fit-mark__value {
+  font-size: var(--text-readout);
+  line-height: var(--leading-readout);
+  letter-spacing: var(--track-readout);
+}
+.wa-fit-mark--readout .wa-fit-arrow {
+  inline-size: 0.6em;
+  block-size: 0.4em;
+}
+
+/* Mono gives "." and ":" a full cell; pull them in so "4.5:1" reads as one value. */
+.wa-fit-punct {
+  margin-inline: -0.16em;
+}
+
+/* The unit: WebAble Sans, 0.6em of the value (never under the 15 px floor),
+   0.15em after the number. No no-break-space glyph, so no double gap in Mono. */
+.wa-fit-unit {
+  margin-inline-start: 0.15em;
+  font-family: var(--font-sans);
+  font-size: max(0.6em, var(--text-meta));
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--track-text);
+  color: var(--ink-2);
+}
+
+/* ---------- Fit value (the value column of "Your fit", §9.4) ---------- */
+
+.wa-fit-value {
+  display: inline-block;
+  max-inline-size: 100%;
+  vertical-align: baseline;
+}
+
+.wa-fit-value__visual {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 0.3em;
+  max-inline-size: 100%;
+}
+
+.wa-fit-value__before {
+  color: var(--ink-2);
+}
+
+.wa-fit-value__after {
+  color: var(--accent);
+  font-weight: var(--weight-medium);
+}
+
+.wa-fit-value__arrow {
+  display: inline-flex;
+  align-self: center;
+  color: var(--ink-2);
+}
+
+/* change and floor values are Mono */
+.wa-fit-value--change .wa-fit-value__visual,
+.wa-fit-value--floor .wa-fit-value__after {
+  font-family: var(--font-mono);
+  font-weight: var(--weight-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+.wa-fit-value--change .wa-fit-value__after,
+.wa-fit-value--floor .wa-fit-value__after {
+  font-weight: var(--weight-medium);
+}
+.wa-fit-value__num {
+  color: var(--accent);
+}
+
+.wa-fit-value--change.wa-fit-value--inline,
+.wa-fit-value--floor.wa-fit-value--inline {
+  font-size: var(--text-mono);
+  line-height: var(--leading-mono);
+}
+.wa-fit-value--change.wa-fit-value--readout,
+.wa-fit-value--floor.wa-fit-value--readout {
+  font-size: var(--text-readout);
+  line-height: var(--leading-readout);
+  letter-spacing: var(--track-readout);
+}
+.wa-fit-value--readout .wa-fit-arrow {
+  inline-size: 0.6em;
+  block-size: 0.4em;
+}
+
+/* The readout is a grid: before (right-aligned) | arrow | after with its unit
+   (left-aligned). The first two columns have the same width in every row, so
+   the arrows line up down a list of rows. */
+.wa-fit-value--change.wa-fit-value--readout .wa-fit-value__visual {
+  display: inline-grid;
+  grid-template-columns: var(
+    --wa-fit-columns,
+    minmax(6ch, max-content) 1.5em minmax(6ch, max-content)
+  );
+  align-items: baseline;
+  column-gap: 0;
+}
+.wa-fit-value--change.wa-fit-value--readout .wa-fit-value__before {
+  justify-self: end;
+}
+.wa-fit-value--change.wa-fit-value--readout .wa-fit-value__arrow {
+  justify-self: center;
+}
+.wa-fit-value--change.wa-fit-value--readout .wa-fit-value__after {
+  justify-self: start;
+}
+
+/* floor: "At least" in Sans 16, secondary ink, then the value */
+.wa-fit-value__lead {
+  font-family: var(--font-sans);
+  font-size: var(--text-ui);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-label);
+  letter-spacing: var(--track-text);
+  color: var(--ink-2);
+}
+.wa-fit-value--floor .wa-fit-value__visual {
+  column-gap: var(--space-2);
+}
+
+/* word: Sans 20 / 540 (16 inline) */
+.wa-fit-value--word {
+  font-size: var(--text-title);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-text);
+}
+.wa-fit-value--word.wa-fit-value--inline {
+  font-size: var(--text-label);
+  line-height: var(--leading-label);
+}
+.wa-fit-value--word .wa-fit-value__visual {
+  column-gap: 0.4em;
+}
+
+/* same: "As the site made it", Sans 16 / 400, secondary ink */
+.wa-fit-value__same {
+  font-size: var(--text-ui);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-label);
+  letter-spacing: var(--track-text);
+  color: var(--ink-2);
+}
+
+/* ---------- Fit row (§9.4): Tune's and the app's "Your fit" ---------- */
+
+/* A list of fit rows with hairlines between them. */
+.wa-fitrows {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-block-start: var(--bw-hair) solid var(--line);
+}
+.wa-fitrows > * {
+  border-block-end: var(--bw-hair) solid var(--line);
+}
+
+.wa-fitrow {
+  --_value-w: 17rem;
+  container: wa-fitrow / inline-size;
+}
+
+.wa-fitrow__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'text text'
+    'value action';
+  align-items: center;
+  gap: var(--space-3) var(--space-6);
+  min-block-size: 4.5rem;
+  padding-block: var(--space-6);
+}
+.wa-fitrow--working .wa-fitrow__main {
+  padding-block: var(--space-5);
+}
+/* Unchanged rows are compact: 56 minimum, 16 padding, no source line. */
+.wa-fitrow--same .wa-fitrow__main {
+  min-block-size: var(--row-min);
+  padding-block: var(--space-4);
+}
+
+.wa-fitrow__text {
+  grid-area: text;
+  min-inline-size: 0;
+}
+
+.wa-fitrow__label {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
+  letter-spacing: var(--track-text);
+  text-wrap: pretty;
+}
+
+.wa-fitrow__sentence {
+  max-inline-size: var(--w-prose);
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+  color: var(--ink-2);
+}
+
+.wa-fitrow__source {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-3);
+}
+
+.wa-fitrow__value {
+  grid-area: value;
+  min-inline-size: 0;
+}
+
+.wa-fitrow__action {
+  grid-area: action;
+  justify-self: end;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+}
+
+.wa-fitrow__editor {
+  padding-block-end: var(--space-6);
+}
+
+/* Stacked (narrow): the value starts on the text edge, so the before value
+   is not padded out to 6ch. */
+.wa-fitrow__main {
+  --wa-fit-columns: max-content 1.5em max-content;
+}
+
+/* Wide enough for three columns: text | value | action. The value column has
+   one width in every row, so values start on one edge and arrows line up. */
+@container wa-fitrow (min-width: 40em) {
+  .wa-fitrow__main {
+    --wa-fit-columns: minmax(6ch, max-content) 1.5em minmax(6ch, max-content);
+    grid-template-columns: minmax(0, 1fr) var(--_value-w) auto;
+    grid-template-areas: 'text value action';
+  }
+}
+
+.wa-fit-block {
+  display: inline-grid;
+  justify-items: center;
+  gap: var(--space-1);
+  inline-size: 100%;
+  min-inline-size: 4rem;
+}
+
+.wa-fit-block--plate .wa-fit-block__value {
+  padding: var(--space-0-5) 0.375rem;
+  border-radius: var(--radius-1);
+  background: var(--canvas);
+}
+
+.wa-fit-block__line {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  block-size: 0.5rem;
+  border-inline: var(--bw-hair) solid var(--ink-2);
+}
+.wa-fit-block__line::before {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: calc(50% - 0.5px);
+  border-block-start: var(--bw-hair) solid var(--ink-2);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wa-fit-block--draw .wa-fit-block__line {
+    animation: wa-draw var(--dur-draw) var(--ease) both;
+  }
+  .wa-fit-block--draw .wa-fit-block__value {
+    animation: wa-fade-in 100ms linear var(--dur-draw) both;
+  }
+}
+
+@keyframes wa-draw {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* =========================================================================
+   15. Section header and index rule (§7.11)
+   ========================================================================= */
+
+.wa-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    'rule'
+    'eyebrow'
+    'title'
+    'deck'
+    'link';
+  justify-items: start;
+  margin-block-end: var(--space-8);
+}
+@media (min-width: 48em) {
+  .wa-section-head {
+    margin-block-end: var(--section-head-gap);
+  }
+  /* The link sits on the eyebrow's baseline, aligned right. */
+  .wa-section-head--link {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      'rule rule'
+      'eyebrow link'
+      'title title'
+      'deck deck';
+    column-gap: var(--space-4);
+  }
+}
+
+.wa-index-rule {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  block-size: 2px;
+  border-block-end: var(--bw-hair) solid var(--line);
+}
+.wa-index-rule::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: 0;
+  inline-size: 1.5rem;
+  border-block-start: var(--bw-strong) solid var(--ink);
+}
+
+/* Grid items may shrink below a long word (a URL in a deck), which then
+   breaks instead of pushing the page sideways. */
+.wa-section-head > * {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  overflow-wrap: anywhere;
+}
+
+.wa-section-head > .wa-index-rule {
+  grid-area: rule;
+  justify-self: stretch;
+  margin-block-end: var(--space-4);
+}
+
+.wa-section-head__eyebrow {
+  grid-area: eyebrow;
+  align-self: baseline;
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-meta);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+}
+
+/* Below 48em the link is the last row, after the deck. */
+.wa-section-head__link {
+  grid-area: link;
+  margin-block-start: var(--space-4);
+  font-size: var(--text-meta);
+  letter-spacing: var(--track-meta);
+}
+@media (min-width: 48em) {
+  .wa-section-head__link {
+    align-self: baseline;
+    justify-self: end;
+    margin-block: 0 var(--space-2);
+  }
+}
+
+.wa-section-head__title {
+  grid-area: title;
+  max-inline-size: 44rem;
+  font-size: var(--text-h2);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-h2);
+  letter-spacing: var(--track-h2);
+}
+.wa-section-head--h1 .wa-section-head__title {
+  font-size: var(--text-h1);
+  line-height: var(--leading-h1);
+  letter-spacing: var(--track-h1);
+}
+.wa-section-head--h3 .wa-section-head__title {
+  font-size: var(--text-h3);
+  line-height: var(--leading-h3);
+  letter-spacing: var(--track-h3);
+}
+
+.wa-section-head__deck {
+  grid-area: deck;
+  max-inline-size: var(--w-prose);
+  margin: var(--space-4) 0 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink-2);
+}
+
+/* =========================================================================
+   16. Empty, error, kbd (§7.18, §7.19)
+   ========================================================================= */
+
+.wa-empty {
+  display: grid;
+  justify-items: start;
+  max-inline-size: var(--w-prose);
+}
+
+.wa-empty__mark {
+  margin-block-end: var(--space-4);
+  color: var(--line-strong);
+}
+
+.wa-empty__title {
+  margin: 0;
+  font-size: var(--text-title);
+  font-weight: var(--weight-medium);
+  line-height: var(--leading-title);
+  letter-spacing: var(--track-text);
+}
+
+.wa-empty__text {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--ink-2);
+}
+
+.wa-empty--compact .wa-empty__text {
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+
+.wa-empty__action {
+  margin-block-start: var(--space-6);
+}
+
+.wa-error {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border-radius: var(--radius-3);
+  background: var(--danger-tint);
+  color: var(--ink);
+}
+
+.wa-error__icon {
+  margin-block-start: 0.125rem;
+  color: var(--danger);
+}
+
+.wa-error__title {
+  margin: 0;
+  font-size: var(--text-body);
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
+  letter-spacing: var(--track-text);
+}
+
+.wa-error__text {
+  margin-block-start: var(--space-1);
+  font-size: var(--text-ui);
+  line-height: var(--leading-ui);
+}
+.wa-error__text > * + * {
+  margin-block-start: var(--space-2);
+}
+
+.wa-error__action {
+  margin-block-start: var(--space-4);
+}
+
+.wa-error__details {
+  margin-block-start: var(--space-3);
+}
+
+.wa-kbd {
+  display: inline-block;
+  padding: var(--space-0-5) 0.375rem;
+  border: var(--bw-hair) solid var(--line);
+  border-radius: var(--radius-1);
+  background: var(--surface-tonal);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: var(--text-mono);
+  font-weight: var(--weight-mono);
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+
+/* =========================================================================
+   17. Progress ruler (§9.3)
+   ========================================================================= */
+
+.wa-ruler {
+  inline-size: 100%;
+  max-inline-size: 30rem;
+  padding-inline: 0.375rem;
+}
+
+.wa-ruler__graphic {
+  display: block;
+  inline-size: 100%;
+  block-size: 24px;
+  overflow: visible;
+}
+
+.wa-ruler__upcoming {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.wa-ruler__done {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.wa-ruler__tick,
+.wa-ruler__sub {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+.wa-ruler__tick--done,
+.wa-ruler__sub--done {
+  stroke: var(--ink);
+}
+.wa-ruler__dot {
+  fill: var(--ink);
+}
+
+.wa-ruler__steps {
+  position: relative;
+  block-size: calc(1em * var(--leading-meta));
+  margin: var(--space-1) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+}
+
+.wa-ruler__step {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: var(--_at);
+  translate: -50% 0;
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+.wa-ruler__step:dir(rtl) {
+  translate: 50% 0;
+}
+.wa-ruler__step--current {
+  color: var(--ink);
+  font-weight: var(--weight-medium);
+}
+
+@media (max-width: 47.99em) {
+  .wa-ruler__step:not(.wa-ruler__step--current) {
+    clip-path: inset(50%);
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+  }
+}
+
+/* =========================================================================
+   18. Offer block (§7.17)
+   ========================================================================= */
+
+.wa-offer {
+  container-type: inline-size;
+  border-radius: var(--radius-3);
+  background: var(--surface-tonal);
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.wa-offer__inner {
+  padding: var(--space-4);
+}
+
+.wa-offer__question {
+  margin: 0;
+  font-size: var(--text-label);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  color: var(--ink);
+}
+
+.wa-offer__reason {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-meta);
+  line-height: var(--leading-meta);
+  letter-spacing: var(--track-meta);
+  color: var(--ink-2);
+}
+
+.wa-offer__pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-block-start: var(--space-4);
+}
+
+.wa-offer__never {
+  /* flush="start": the label sits on the offer's text edge. */
+  margin-block-start: var(--space-2);
+}
+
+@container (max-width: 21.24rem) {
+  .wa-offer__pair {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* =========================================================================
+   19. Wordmark
+   ========================================================================= */
+
+/* The lockup: the mark cropped to its bounds (16 px tall), 8 px before the
+   20 px word. The glyph's height matches the word's cap height plus descent of
+   the tailed l, so the two read as one unit. */
+.wa-wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--ink);
+  font-size: var(--text-title);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* =========================================================================
+   20. Forced colours (Windows contrast themes)
+   ========================================================================= */
+
+@media (forced-colors: active) {
+  .wa-btn,
+  .wa-icon-btn--secondary,
+  .wa-toast__action {
+    border-color: ButtonText;
+  }
+  .wa-btn[aria-disabled='true'],
+  .wa-icon-btn[aria-disabled='true'] {
+    border-color: GrayText;
+    color: GrayText;
+  }
+
+  .wa-switch__track {
+    border-color: ButtonText;
+  }
+  .wa-switch__thumb {
+    forced-color-adjust: none;
+    background: ButtonText;
+  }
+  .wa-switch[aria-checked='true'] .wa-switch__track {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Highlight;
+  }
+  .wa-switch[aria-checked='true'] .wa-switch__thumb {
+    background: HighlightText;
+    color: Highlight;
+  }
+  .wa-switch[aria-disabled='true'] .wa-switch__track,
+  .wa-switch[aria-disabled='true'][aria-checked='true'] .wa-switch__track {
+    border-color: GrayText;
+    background: Canvas;
+  }
+  .wa-switch[aria-disabled='true'] .wa-switch__thumb {
+    background: GrayText;
+    color: Canvas;
+  }
+
+  .wa-checkbox__box {
+    border-color: ButtonText;
+  }
+  .wa-checkbox:is([data-selected], [data-indeterminate]) .wa-checkbox__box {
+    forced-color-adjust: none;
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .wa-segmented {
+    border: 1px solid ButtonText;
+  }
+  .wa-segmented__indicator {
+    display: none;
+  }
+  /* Selected: a Highlight fill and a 3 px edge, so it reads by shape and
+     by system colour. Padding gives back the extra 2 px so nothing shifts. */
+  .wa-segmented[data-ready] .wa-segmented__item[aria-checked='true'],
+  .wa-segmented__item[aria-checked='true'] {
+    forced-color-adjust: none;
+    padding-inline: calc(var(--space-4) - 2px);
+    border: 3px solid ButtonText;
+    background: Highlight;
+    color: HighlightText;
+  }
+
+  .wa-slider__track {
+    forced-color-adjust: none;
+    background: GrayText;
+  }
+  .wa-slider__fill {
+    background: Highlight;
+  }
+  .wa-slider__tick {
+    forced-color-adjust: none;
+    background: GrayText;
+  }
+  .wa-slider__thumb {
+    border-color: ButtonText;
+  }
+
+  .wa-status-glyph,
+  .wa-status-glyph--adapted,
+  .wa-status-glyph--attention {
+    color: CanvasText;
+  }
+  .wa-status-glyph__track {
+    stroke: GrayText;
+  }
+
+  .wa-ruler__upcoming,
+  .wa-ruler__tick,
+  .wa-ruler__sub {
+    stroke: GrayText;
+  }
+  .wa-ruler__done,
+  .wa-ruler__tick--done,
+  .wa-ruler__sub--done {
+    stroke: CanvasText;
+  }
+  .wa-ruler__dot {
+    fill: CanvasText;
+  }
+
+  .wa-offer,
+  .wa-error,
+  .wa-toast,
+  .wa-tooltip,
+  .wa-status-pill,
+  .wa-dialog {
+    border: 1px solid CanvasText;
+  }
+  .wa-offer {
+    border-inline-start-width: 3px;
+  }
+}
+
+/* Tooltip wrapper: layout-neutral, it only listens for focus. */
+.wa-tooltip-anchor {
+  display: contents;
+}
