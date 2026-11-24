@@ -64,3 +64,11 @@ The e2e build grants access only to `http://127.0.0.1:4173/*`. Always load the p
 CI runs **lint → typecheck → unit tests → e2e/axe → production build** and uploads `webable-chrome-mv3` only after success. On test failure it retains Playwright diagnostics. Download and extract the artifact, then choose the extracted directory containing `manifest.json` in Chrome's **Load unpacked** dialog.
 
 Automated axe checks are a baseline; they do not certify every accessibility requirement.
+
+## Backend authentication
+
+The `extension-link` Supabase Edge Function creates a single-use sign-in handoff for a verified web-app user. It returns a token hash, keeps refresh tokens out of the handoff, and checks the generated link belongs to the caller. This PR adds the backend endpoint; connecting the extension UI is subsequent work.
+
+Install Deno 2.9.8 (the CI version), then run `pnpm test:functions` for the backend typecheck and mocked authentication/HTTP tests. `pnpm check` and `pnpm verify` also include this suite. No Supabase credentials or live database are needed for automated tests.
+
+See [Backend authentication setup](supabase/README.md) for configuration, request examples, and deployment checks.

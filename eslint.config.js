@@ -15,7 +15,6 @@ export default tseslint.config(
       '**/test-results/**',
       '**/.next*/**',
       '**/next-env.d.ts',
-      'supabase/functions/**',
       'supabase/.temp/**',
       'packages/core/src/db/types.ts',
       'docs/**',
@@ -59,6 +58,10 @@ export default tseslint.config(
         },
       ],
     },
+  },
+  {
+    files: ['supabase/**/*.ts'],
+    languageOptions: { globals: { Deno: 'readonly' } },
   },
   prettier,
 );
