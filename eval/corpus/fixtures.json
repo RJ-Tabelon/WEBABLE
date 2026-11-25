@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "description": "Offline paired fixtures. Each pair is the same content built inaccessibly (before) and accessibly (after), so results have a controlled ground truth and run in CI without network access.",
+  "fixtures": [
+    {
+      "id": "fixture-news",
+      "category": "news",
+      "before": "fixtures/news/before.html",
+      "after": "fixtures/news/after.html"
+    },
+    {
+      "id": "fixture-shopping",
+      "category": "shopping",
+      "before": "fixtures/shopping/before.html",
+      "after": "fixtures/shopping/after.html"
+    },
+    {
+      "id": "fixture-gov-form",
+      "category": "government-forms",
+      "before": "fixtures/gov-form/before.html",
+      "after": "fixtures/gov-form/after.html"
+    },
+    {
+      "id": "fixture-banking",
+      "category": "banking-demo",
+      "before": "fixtures/banking/before.html",
+      "after": "fixtures/banking/after.html"
+    }
+  ]
+}

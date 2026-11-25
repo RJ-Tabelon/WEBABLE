@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Shop</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+      }
+      .price {
+        color: #ff9999;
+      }
+      .btn {
+        background: #ffd966;
+        color: #fff;
+        padding: 2px 4px;
+        font-size: 10px;
+        display: inline-block;
+      }
+      .promo {
+        animation: blink 0.5s infinite;
+      }
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="promo">SALE! 50% OFF TODAY ONLY</div>
+    <input type="text" placeholder="Search" />
+    <div class="product">
+      <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+        width="120"
+        height="120"
+      />
+      <div>Allergy relief tablets, 30 count</div>
+      <div class="price">$12.99</div>
+      <div class="btn" onclick="alert('added')">Add</div>
+    </div>
+    <div class="product">
+      <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+        width="120"
+        height="120"
+      />
+      <div>Digital thermometer</div>
+      <div class="price">$9.49</div>
+      <div class="btn" onclick="alert('added')">Add</div>
+    </div>
+  </body>
+</html>

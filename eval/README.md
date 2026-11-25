@@ -17,6 +17,12 @@ Each entry includes:
 | `why`      | Why the site is in the set                                                                  |
 | `pages`    | Paths to visit, relative to the site root                                                   |
 
+## Offline fixtures
+
+[`corpus/fixtures.json`](corpus/fixtures.json) lists four paired pages (news, shopping, a government form and banking). Each pair has the same content built inaccessibly (`before.html`) and accessibly (`after.html`).
+
+`apps/extension/tests/unit/corpus-fixtures.test.js` runs axe-core on every pair in CI: each `before` must have violations and each `after` must have none. The pages need no network, so they give a controlled baseline that real sites can't.
+
 ## Ground rules
 
 - Read only. No purchases, form submissions or scraping on real sites.

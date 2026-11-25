@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Transfer funds | Demo Bank</title>
+    <style>
+      body {
+        font-family: Tahoma, sans-serif;
+        font-size: 18px;
+        color: #1a1a1a;
+      }
+      label {
+        display: block;
+        margin-top: 16px;
+      }
+      button {
+        font-size: 18px;
+        padding: 12px 20px;
+        background: #1d4ed8;
+        color: #fff;
+        border: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+        width="160"
+        height="40"
+        alt="Demo Bank"
+      />
+    </header>
+    <main>
+      <h1>Transfer funds</h1>
+      <form>
+        <label for="amount">Amount in dollars</label>
+        <input id="amount" type="text" inputmode="decimal" />
+        <label for="from">From account</label>
+        <select id="from">
+          <option>Checking ending 1234</option>
+          <option>Savings ending 5678</option>
+        </select>
+        <label for="to">To account</label>
+        <select id="to">
+          <option>Savings ending 5678</option>
+          <option>Checking ending 1234</option>
+        </select>
+        <button type="submit">Transfer</button>
+      </form>
+      <p role="status">
+        Your session expires in 15 minutes. You can extend it from your account
+        settings.
+      </p>
+    </main>
+  </body>
+</html>
